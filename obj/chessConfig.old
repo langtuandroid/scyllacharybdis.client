@@ -21,7 +21,9 @@
       <path-element>C:\Development\client\src</path-element>
       <path-element>C:\Development\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
-    <library-path append="true" />
+    <library-path append="true">
+      <path-element>C:\Development\client\lib\SC.swc</path-element>
+    </library-path>
   </compiler>
   <file-specs>
     <path-element>C:\Development\client\src\Main.as</path-element>
