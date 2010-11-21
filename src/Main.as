@@ -77,36 +77,6 @@
 			_networkmanager.addComponent(MessageHandler);
 		}
 		
-		private function setupTestSquares(e:Event = null):void
-		{
-			// entry point
-			//_camera = MemoryManager.instantiate( GameObject, [CameraScriptComponent, TransformComponent] );
-			//_camera.enabled = false;
-			
-			// Set the square
-			_square = MemoryManager.instantiate( GameObject, GameObject.dependencies);
-			_square.addComponent(SquareScriptComponent, [EventManager]);
-			_square.addComponent(SquareRenderComponent);
-			_square.addComponent(TransformComponent);
-			
-			// Set the square
-			_otherSquare = MemoryManager.instantiate( GameObject, GameObject.dependencies );
-			_otherSquare.addComponent(SquareScriptComponent, [EventManager]);
-			_otherSquare.addComponent(OtherSquareRenderComponent);
-			_otherSquare.addComponent(TransformComponent);
-
-			// Disable the sqares
-			_square.enabled = true;
-			_otherSquare.enabled = true;
-
-			// Update the components
-			_square.getComponent( BaseObject.TRANSFORM_COMPONENT ).position = new Point3d( 50, 50, 11 );
-			_square.getComponent( BaseObject.TRANSFORM_COMPONENT ).rotate = 45;
-			_otherSquare.getComponent( BaseObject.TRANSFORM_COMPONENT ).position = new Point3d( 100, 100, 10 );
-
-			
-		}
-		
 		private function setupChessBoard(e:Event = null):void
 		{
 			// Set the square
