@@ -16,7 +16,7 @@
 	
 	import chess.BoardRenderComponent;
 	import chess.BoardScriptComponent;
-	import chess.PieceScriptComponent;
+	import chess.pieces.PieceScriptComponent;
 	import chess.WhiteSquareRenderComponent;
 	import chess.BlackSquareRenderComponent;
 	
