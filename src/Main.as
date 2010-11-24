@@ -2,6 +2,7 @@
 {
 	
 	import chess.LoginScene;
+	import chess.GameScene;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -54,18 +55,18 @@
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 
-			setup(e);
-			setupLogin();
-			//setupChessBoard(e);
-			//testEvent();
+			setup();
 			
-			addEventListener( Event.ENTER_FRAME, onEnterFrame );
+			start();
 		}
 		
-		private function setup(e:Event = null):void
+		private function setup():void
 		{
 			// Create the renderer
 			_renderer = MemoryManager.instantiate(Renderer, Renderer.dependencies);
+			
+			// Start the renderer
+			addEventListener( Event.ENTER_FRAME, onEnterFrame );
 			
 			// Create the event manager
 			_eventManager = MemoryManager.instantiate(EventManager);
@@ -84,22 +85,10 @@
 			_sceneManager = MemoryManager.instantiate( SceneManager );
 		}
 		
-		private function setupLogin():void
+		private function start():void
 		{
-			_sceneManager.PushScene( LoginScene, false );
-		}
-		
-		private function setupChessBoard(e:Event = null):void
-		{
-			// Set the square
-			_board = MemoryManager.instantiate( GameObject, GameObject.dependencies );
-			_board.addComponent(BoardScriptComponent, [EventManager]);
-			_board.addComponent(BoardRenderComponent);			
-
-			_board.position = new Point3d(0, 0, 0);
-			_board.rotate = 0;
-			
-			_board.enabled = true;
+			_sceneManager.PushScene( LoginScene );
+			_sceneManager.PushScene( GameScene, false );
 		}
 		
 		private function testEvent():void

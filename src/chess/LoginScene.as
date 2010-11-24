@@ -19,13 +19,26 @@ package chess
 			
 		}
 		
-		public override function show():void
+		public override function awake():void
 		{
 			_loginBox = MemoryManager.instantiate( GameObject, GameObject.dependencies );
 			_loginBox.addComponent(LoginBoxScriptComponent, [EventManager]);
 			_loginBox.addComponent(LoginBoxRenderComponent);
-			
+		}
+		
+		public override function destroy():void
+		{
+			MemoryManager.destroy( _loginBox );
+		}
+		
+		public override function show():void
+		{
 			_loginBox.enabled = true;
+		}
+		
+		public override function hide():void
+		{
+			_loginBox.enabled = false;
 		}
 		
 	}

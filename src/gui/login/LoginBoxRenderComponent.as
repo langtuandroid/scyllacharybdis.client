@@ -1,6 +1,7 @@
 package gui.login 
 {
 	import components.RenderComponent;
+	import flash.display.MovieClip;
 	
 	import fl.controls.TextInput;
     import fl.controls.Label;
@@ -30,6 +31,41 @@ package gui.login
 			super();
 		}
 		
+		public override function awake():void
+		{
+			_userInput = new TextInput();
+            _passInput = new TextInput();
+			_userLabel = new Label();
+            _passLabel = new Label();
+            _loginButton = new Button();
+		}
+		
+		public override function destroy():void
+		{
+			// Null out the references
+			_userInput = null;
+			_passInput = null;
+			_userLabel = null;
+			_passLabel = null;
+			_loginButton = null;
+		}
+		
+		public override function stop():void 
+		{
+			_userInput.removeEventListener(Event.CHANGE, owner.getComponent( SCRIPT_COMPONENT ).textEntered);
+            _passInput.removeEventListener(Event.CHANGE, owner.getComponent( SCRIPT_COMPONENT ).textEntered);
+			_loginButton.removeEventListener(MouseEvent.CLICK, owner.getComponent( SCRIPT_COMPONENT ).submitLogin);
+			
+			baseclip.removeChild(_userInput);
+			baseclip.removeChild(_passInput);
+			baseclip.removeChild(_userLabel);
+			baseclip.removeChild(_passLabel);
+			baseclip.removeChild(_loginButton);
+			
+			// Reset the baseclip
+			baseclip.graphics.clear();
+		}
+		
 		public override function start():void
 		{
 			drawBackground();
@@ -47,16 +83,13 @@ package gui.login
 		
 		private function setupInputFields():void 
 		{
-            _userInput = new TextInput();
-            _passInput = new TextInput();
-            
 			_userInput.move(50,10);
             _passInput.move(50,40);
             
 			_passInput.displayAsPassword = true;
             
-			_userInput.addEventListener(Event.CHANGE, owner.getComponent( SCRIPT_COMPONENT ).textEntered);
-            _passInput.addEventListener(Event.CHANGE, owner.getComponent( SCRIPT_COMPONENT ).textEntered);
+			_userInput.addEventListener(Event.CHANGE, owner.getComponent( SCRIPT_COMPONENT ).textEntered, false, 0, true );
+            _passInput.addEventListener(Event.CHANGE, owner.getComponent( SCRIPT_COMPONENT ).textEntered, false, 0, true );
             
 			baseclip.addChild(_userInput);
             baseclip.addChild(_passInput);
@@ -64,9 +97,6 @@ package gui.login
 		
         private function setupLabels():void 
 		{    
-			_userLabel = new Label();
-            _passLabel = new Label();
-            
 			_userLabel.move(10,10);
             _passLabel.move(10,40);
             
@@ -79,8 +109,6 @@ package gui.login
 		
         private function setupButton():void 
 		{
-            _loginButton = new Button();
-            
 			_loginButton.move(150,70);
             _loginButton.setSize(50, 20);
 			
