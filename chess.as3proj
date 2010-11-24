@@ -52,6 +52,8 @@
   <libraryPaths>
     <element path="lib\SFS2X_API_AS3.swc" />
     <element path="lib\SC.swc" />
+    <element path="lib\StandardComponents.swc" />
+    <element path="lib\AstraLib.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

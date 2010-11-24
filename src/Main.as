@@ -12,13 +12,13 @@
 	import core.MemoryManager;
 	import core.EventManager;
 	import core.NetworkManager;
-	import components.TransformComponent;
 	
 	import chess.BoardRenderComponent;
 	import chess.BoardScriptComponent;
-	import chess.pieces.PieceScriptComponent;
-	import chess.WhiteSquareRenderComponent;
-	import chess.BlackSquareRenderComponent;
+	
+	import gui.login.LoginBoxRenderComponent;
+	import gui.login.LoginBoxScriptComponent;
+	import gui.login.LoginBoxNetworkComponent;
 	
 	import handlers.ConnectionHandler;
 	import handlers.LoginHandler;
@@ -32,8 +32,7 @@
 		private var _renderer:Renderer;
 		private var _networkManager:NetworkManager;
 		
-		private var _square:GameObject;
-		private var _otherSquare:GameObject;
+		private var _loginBox:GameObject;
 		private var _board:GameObject;
 		
 		private var _eventManager:EventManager;
@@ -53,9 +52,9 @@
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 
 			setup(e);
-			//setupTestSquares(e);
-			setupChessBoard(e);
-			testEvent();
+			setupLogin();
+			//setupChessBoard(e);
+			//testEvent();
 			
 			addEventListener( Event.ENTER_FRAME, onEnterFrame );
 		}
@@ -77,16 +76,24 @@
 			_networkmanager.addComponent(MessageHandler);
 		}
 		
+		private function setupLogin():void
+		{
+			_loginBox = MemoryManager.instantiate( GameObject, GameObject.dependencies );
+			_loginBox.addComponent(LoginBoxScriptComponent, [EventManager]);
+			_loginBox.addComponent(LoginBoxRenderComponent);
+			
+			_loginBox.enabled = true;
+		}
+		
 		private function setupChessBoard(e:Event = null):void
 		{
 			// Set the square
 			_board = MemoryManager.instantiate( GameObject, GameObject.dependencies );
 			_board.addComponent(BoardScriptComponent, [EventManager]);
-			_board.addComponent(BoardRenderComponent);
-			_board.addComponent(TransformComponent);			
+			_board.addComponent(BoardRenderComponent);			
 
-			_board.getComponent( BaseObject.TRANSFORM_COMPONENT ).position = new Point3d(0, 0, 0);
-			_board.getComponent( BaseObject.TRANSFORM_COMPONENT ).rotate = 0;
+			_board.position = new Point3d(0, 0, 0);
+			_board.rotate = 0;
 			
 			_board.enabled = true;
 		}
