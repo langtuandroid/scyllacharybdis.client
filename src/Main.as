@@ -13,7 +13,7 @@
 	import core.Renderer;
 	import core.MemoryManager;
 	import core.EventManager;
-	import core.NetworkManager;
+	import core.NetworkObject;
 	import core.SceneManager;
 	
 	import chess.BoardRenderComponent;
@@ -33,16 +33,12 @@
 	public class Main extends Sprite 
 	{
 		private var _renderer:Renderer;
-		private var _networkManager:NetworkManager;
-		
 		private var _loginBox:GameObject;
 		private var _board:GameObject;
-		
 		private var _eventManager:EventManager;
 		private var _listerner:EventListener;
-		private var _networkmanager:NetworkManager;
+		private var _networkObject:NetworkObject;
 		private var _sceneManager:SceneManager;
-		
 		
 		
 		public function Main():void 
@@ -56,7 +52,6 @@
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 
 			setup();
-			
 			start();
 		}
 		
@@ -75,11 +70,11 @@
 			_listerner = MemoryManager.instantiate( EventListener, [EventManager] );			
 
 			// Create a network layer
-			_networkmanager = MemoryManager.instantiate(NetworkManager, [EventManager]);			
-			_networkmanager.addComponent(ConnectionHandler);
-			_networkmanager.addComponent(LoginHandler);
-			_networkmanager.addComponent(RoomHandler);
-			_networkmanager.addComponent(MessageHandler);
+			_networkObject = MemoryManager.instantiate(NetworkObject);			
+			_networkObject.addComponent(ConnectionHandler, [EventManager]);
+			_networkObject.addComponent(LoginHandler, [EventManager]);
+			_networkObject.addComponent(RoomHandler, [EventManager]);
+			_networkObject.addComponent(MessageHandler, [EventManager]);
 			
 			// Create a scene manager
 			_sceneManager = MemoryManager.instantiate( SceneManager );
@@ -87,8 +82,17 @@
 		
 		private function start():void
 		{
-			_sceneManager.PushScene( LoginScene );
-			_sceneManager.PushScene( GameScene, false );
+			// This now works
+			//_sceneManager.PushScene( LoginScene );
+			//_sceneManager.PushScene( GameScene );
+			//_sceneManager.PopScene();
+			
+			// You could also do something like 
+			_sceneManager.PushScene( GameScene );
+			_sceneManager.PushScene( LoginScene ); 
+			
+			// On login success pop the screen
+			//_sceneManager.PopScene();
 		}
 		
 		private function testEvent():void
