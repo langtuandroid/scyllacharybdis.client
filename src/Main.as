@@ -1,6 +1,7 @@
 ﻿package 
 {
 	
+	import chess.LoginScene;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -12,6 +13,7 @@
 	import core.MemoryManager;
 	import core.EventManager;
 	import core.NetworkManager;
+	import core.SceneManager;
 	
 	import chess.BoardRenderComponent;
 	import chess.BoardScriptComponent;
@@ -38,6 +40,7 @@
 		private var _eventManager:EventManager;
 		private var _listerner:EventListener;
 		private var _networkmanager:NetworkManager;
+		private var _sceneManager:SceneManager;
 		
 		
 		
@@ -61,10 +64,12 @@
 		
 		private function setup(e:Event = null):void
 		{
+			// Create the renderer
 			_renderer = MemoryManager.instantiate(Renderer, Renderer.dependencies);
 			
 			// Create the event manager
 			_eventManager = MemoryManager.instantiate(EventManager);
+			
 			
 			_listerner = MemoryManager.instantiate( EventListener, [EventManager] );			
 
@@ -74,15 +79,14 @@
 			_networkmanager.addComponent(LoginHandler);
 			_networkmanager.addComponent(RoomHandler);
 			_networkmanager.addComponent(MessageHandler);
+			
+			// Create a scene manager
+			_sceneManager = MemoryManager.instantiate( SceneManager );
 		}
 		
 		private function setupLogin():void
 		{
-			_loginBox = MemoryManager.instantiate( GameObject, GameObject.dependencies );
-			_loginBox.addComponent(LoginBoxScriptComponent, [EventManager]);
-			_loginBox.addComponent(LoginBoxRenderComponent);
-			
-			_loginBox.enabled = true;
+			_sceneManager.PushScene( LoginScene, false );
 		}
 		
 		private function setupChessBoard(e:Event = null):void
