@@ -21,7 +21,6 @@
 	
 	import gui.login.LoginBoxRenderComponent;
 	import gui.login.LoginBoxScriptComponent;
-	import gui.login.LoginBoxNetworkComponent;
 	
 	import handlers.ConnectionHandler;
 	import handlers.LoginHandler;
@@ -82,26 +81,45 @@
 		
 		private function start():void
 		{
-			// This now works
-			//_sceneManager.PushScene( LoginScene );
-			//_sceneManager.PushScene( GameScene );
-			//_sceneManager.PopScene();
+			_eventManager.registerListener("CONNECTION_SUCCESS", this, onConnectionSuccess );
+			_eventManager.registerListener("CONNECTION_FAILED", this, onConnectionFail );
 			
-			// You could also do something like 
-			_sceneManager.PushScene( GameScene );
-			_sceneManager.PushScene( LoginScene ); 
+			_eventManager.fireEvent("NETWORK_CONNECT");
+			
 			
 			// On login success pop the screen
 			//_sceneManager.PopScene();
 		}
 		
-		private function testEvent():void
+		private function onConnectionSuccess( data:* ):void
 		{
-		
-			_eventManager.fireEvent("myevent", null);
+			_eventManager.registerListener("LOGIN_SUCCESS", this, onLoginSuccess);
 			
+			// Push a game scene with a login scene on top 
+			_sceneManager.PushScene( GameScene );
+			_sceneManager.PushScene( LoginScene );
 		}
-
+		
+		private function onConnectionFail( data:* ):void
+		{
+			var msg:String = data as String;
+			
+			trace("CONNECTION FAILED: " + msg);
+		}
+		
+		private function onLoginSuccess( data:* ):void
+		{
+			//_eventManager.unregisterListener("LOGIN_SUCCESS", this, onLoginSuccess);
+			
+			trace("Popping Scene");
+			_sceneManager.PopScene();
+		}
+		
+		private function onLoginFail( data:* ):void
+		{
+			trace("YOU SUCK, LOGIN FAILED");
+		}
+		
 		private function onEnterFrame( e:Event ):void
 		{
 			_renderer.render(this);
