@@ -22,13 +22,14 @@ package chess
 		public override function awake():void
 		{
 			_loginBox = MemoryManager.instantiate( GameObject, GameObject.dependencies );
-			_loginBox.addComponent(LoginBoxScriptComponent, [EventManager]);
+			_loginBox.addComponent(LoginBoxScriptComponent, LoginBoxScriptComponent.dependencies);
 			_loginBox.addComponent(LoginBoxRenderComponent);
 		}
 		
 		public override function destroy():void
 		{
 			MemoryManager.destroy( _loginBox );
+			_loginBox = null;
 		}
 		
 		public override function show():void

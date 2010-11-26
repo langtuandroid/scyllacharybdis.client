@@ -1,9 +1,10 @@
 package gui.login 
 {
 	import components.ScriptComponent;
-	
+	import core.EventManager;
 	import flash.events.Event;
     import flash.events.MouseEvent;
+	import models.LoginModel;
 	
 	/**
 	 * ...
@@ -11,10 +12,18 @@ package gui.login
 	 */
 	public class LoginBoxScriptComponent extends ScriptComponent 
 	{
+		private var _eventManager:EventManager = null;
+		
+		public static function get dependencies():Array { return [EventManager]; }
 		
 		public function LoginBoxScriptComponent() 
 		{
 			super();
+		}
+		
+		public override function awake():void
+		{
+			_eventManager = getDependency(EventManager);
 		}
 		
 		public function textEntered(e:Event):void 
@@ -35,7 +44,10 @@ package gui.login
 		{
             var renderable:LoginBoxRenderComponent = owner.getComponent( RENDER_COMPONENT );
 			
-			trace("User: " + renderable.username + "\nPass: " + renderable.password);
+			var user:String = renderable.username;
+			var pass:String = renderable.password;
+			
+			_eventManager.fireEvent("NETWORK_LOGIN", new LoginModel( user, pass, LoginModel.USER_LOGIN ) );
 			
             renderable.loginButton.removeEventListener(MouseEvent.CLICK, submitLogin);
         }
