@@ -71,12 +71,12 @@ package chess
 					// Make a square
 					var square:GameObject = MemoryManager.instantiate(GameObject, GameObject.dependencies);
 					
-					// Add the square as a child to the board
-					owner.addChild( square );
-					
 					// Set its components
 					square.addComponent(TransformComponent);
 					square.addComponent( ( i % 2 == j % 2 ) ? WhiteSquareRenderComponent : BlackSquareRenderComponent );
+					
+					// Add the square as a child to the board
+					owner.addChild( square );
 					
 					// Size and place square
 					square.getComponent( BaseObject.TRANSFORM_COMPONENT ).dimensions = new Point( size, size );
@@ -303,7 +303,10 @@ package chess
 			
 			for ( key in _pieces )
 			{
-				_pieces[key].removeEventListener( ChessEvent.DROP, onDrop );
+				if ( _pieces[key] )
+				{
+					_pieces[key].removeEventListener( ChessEvent.DROP, onDrop );	
+				}
 				delete _pieces[key];
 			}
 			
