@@ -180,7 +180,7 @@
       <dep id="AS3" />
       <dep id="com.smartfoxserver.v2.exceptions:SFSValidationError" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\BoardScriptComponent.as" mod="1290400322886" size="5885" optimizedsize="4080">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\BoardScriptComponent.as" mod="1290830004551" size="5899" optimizedsize="4089">
       <def id="chess:BoardScriptComponent" />
       <pre id="components:ScriptComponent" />
       <dep id="chess.pieces:BlackKingRenderComponent" />
@@ -375,7 +375,7 @@
       <dep id="com.smartfoxserver.v2.requests:JoinRoomRequest" />
       <dep id="com.smartfoxserver.v2.requests:RoomSettings" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackPawnRenderComponent.as" mod="1290310805229" size="1231" optimizedsize="692">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackPawnRenderComponent.as" mod="1290310805229" size="1226" optimizedsize="687">
       <def id="chess.pieces:BlackPawnRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -388,7 +388,7 @@
       <pre id="Object" />
       <dep id="AS3" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackKnightRenderComponent.as" mod="1290310805188" size="1247" optimizedsize="696">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackKnightRenderComponent.as" mod="1290310805188" size="1242" optimizedsize="691">
       <def id="chess.pieces:BlackKnightRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -479,7 +479,7 @@
       <dep id="flash.events:TimerEvent" />
       <dep id="XML" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhiteBishopRenderComponent.as" mod="1290310805246" size="1247" optimizedsize="696">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhiteBishopRenderComponent.as" mod="1290310805246" size="1242" optimizedsize="691">
       <def id="chess.pieces:WhiteBishopRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -513,7 +513,7 @@
       <pre id="core:BaseObject" />
       <dep id="AS3" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhiteKnightRenderComponent.as" mod="1290310805242" size="1247" optimizedsize="696">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhiteKnightRenderComponent.as" mod="1290310805242" size="1242" optimizedsize="691">
       <def id="chess.pieces:WhiteKnightRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -585,9 +585,10 @@
       <dep id="fl.events:ComponentEvent" />
       <dep id="flash.events:TimerEvent" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\PieceScriptComponent.as" mod="1290399676801" size="1350" optimizedsize="764">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\PieceScriptComponent.as" mod="1290831537528" size="1733" optimizedsize="1037">
       <def id="chess.pieces:PieceScriptComponent" />
       <pre id="components:ScriptComponent" />
+      <dep id="org.casalib.math.geom:Point3d" />
       <dep id="flash.events:MouseEvent" />
       <dep id="AS3" />
       <dep id="components:RenderComponent" />
@@ -696,7 +697,7 @@
       <dep id="trace" />
       <dep id="flash.utils:Dictionary" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackBishopRenderComponent.as" mod="1290310805216" size="1247" optimizedsize="696">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackBishopRenderComponent.as" mod="1290310805216" size="1242" optimizedsize="691">
       <def id="chess.pieces:BlackBishopRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -711,7 +712,7 @@
       <dep id="com.smartfoxserver.v2:SmartFox" />
       <dep id="AS3" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\lib\SC.swc(core:ContainerObject)" mod="1290642555190" size="1342" optimizedsize="731">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\lib\SC.swc(core:ContainerObject)" mod="1290828191544" size="1605" optimizedsize="864">
       <def id="core:ContainerObject" />
       <pre id="core:BaseObject" />
       <dep id="AS3" />
@@ -757,7 +758,7 @@
       <dep id="core:MemoryManager" />
       <dep id="flash.utils:Dictionary" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhitePawnRenderComponent.as" mod="1290310805234" size="1231" optimizedsize="692">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhitePawnRenderComponent.as" mod="1290310805234" size="1226" optimizedsize="687">
       <def id="chess.pieces:WhitePawnRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -907,7 +908,7 @@
       <dep id="flash.display:InteractiveObject" />
       <dep id="fl.controls:Button" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhiteKingRenderComponent.as" mod="1290310805255" size="1231" optimizedsize="692">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhiteKingRenderComponent.as" mod="1290310805255" size="1226" optimizedsize="687">
       <def id="chess.pieces:WhiteKingRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -1058,7 +1059,7 @@
       <dep id="com.smartfoxserver.v2:SmartFox" />
       <dep id="AS3" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\WhiteSquareRenderComponent.as" mod="1290309990715" size="829" optimizedsize="445">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\WhiteSquareRenderComponent.as" mod="1290309990715" size="824" optimizedsize="440">
       <def id="chess:WhiteSquareRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="AS3" />
@@ -1284,7 +1285,7 @@
       <dep id="com.smartfoxserver.v2.logging:Logger" />
       <dep id="com.smartfoxserver.v2.exceptions:SFSError" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackKingRenderComponent.as" mod="1290310805226" size="1231" optimizedsize="692">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackKingRenderComponent.as" mod="1290310805226" size="1226" optimizedsize="687">
       <def id="chess.pieces:BlackKingRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -1341,7 +1342,7 @@
       <dep id="com.smartfoxserver.v2.entities.data:ISFSObject" />
       <dep id="com.smartfoxserver.v2.exceptions:SFSError" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\BlackSquareRenderComponent.as" mod="1290309951307" size="830" optimizedsize="445">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\BlackSquareRenderComponent.as" mod="1290309951307" size="825" optimizedsize="440">
       <def id="chess:BlackSquareRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="AS3" />
@@ -1418,7 +1419,7 @@
       <dep id="AS3" />
       <dep id="as3reflect:Type" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\GameScene.as" mod="1290574434342" size="1062" optimizedsize="578">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\GameScene.as" mod="1290828868357" size="1085" optimizedsize="596">
       <def id="chess:GameScene" />
       <pre id="core:SceneObject" />
       <dep id="core:GameObject" />
@@ -1433,7 +1434,7 @@
       <pre id="flash.display:MovieClip" />
       <dep id="AS3" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhiteQueenRenderComponent.as" mod="1290310829164" size="1239" optimizedsize="694">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhiteQueenRenderComponent.as" mod="1290310829164" size="1234" optimizedsize="689">
       <def id="chess.pieces:WhiteQueenRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -1470,7 +1471,7 @@
       <pre id="Object" />
       <dep id="AS3" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhiteRookRenderComponent.as" mod="1290310805238" size="1231" optimizedsize="692">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\WhiteRookRenderComponent.as" mod="1290310805238" size="1226" optimizedsize="687">
       <def id="chess.pieces:WhiteRookRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -1566,7 +1567,7 @@
       <dep id="com.smartfoxserver.v2.entities.match:IMatcher" />
       <dep id="com.smartfoxserver.v2.entities.match:LogicOperator" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackRookRenderComponent.as" mod="1290310805209" size="1231" optimizedsize="692">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackRookRenderComponent.as" mod="1290310805209" size="1226" optimizedsize="687">
       <def id="chess.pieces:BlackRookRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -1651,7 +1652,7 @@
       <dep id="components:RenderComponent" />
       <dep id="flash.geom:Point" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\ChessEvent.as" mod="1290398906138" size="623" optimizedsize="268">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\ChessEvent.as" mod="1290398906138" size="618" optimizedsize="263">
       <def id="chess:ChessEvent" />
       <pre id="events:EngineEvent" />
       <dep id="AS3" />
@@ -1716,7 +1717,7 @@
       <dep id="AS3" />
       <dep id="com.smartfoxserver.v2.exceptions:SFSValidationError" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackQueenRenderComponent.as" mod="1290310805222" size="1239" optimizedsize="694">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\pieces\BlackQueenRenderComponent.as" mod="1290310805222" size="1234" optimizedsize="689">
       <def id="chess.pieces:BlackQueenRenderComponent" />
       <pre id="components:RenderComponent" />
       <dep id="flash.events:Event" />
@@ -1735,7 +1736,7 @@
       <dep id="com.smartfoxserver.v2.entities.variables:SFSBuddyVariable" />
       <dep id="com.smartfoxserver.v2.util:ArrayUtil" />
     </script>
-    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\LoginScene.as" mod="1290820096694" size="1077" optimizedsize="585">
+    <script name="C:\Users\danny\Code\Flash\scyllacharybdis-client\src\chess\LoginScene.as" mod="1290828831978" size="1100" optimizedsize="603">
       <def id="chess:LoginScene" />
       <pre id="core:SceneObject" />
       <dep id="core:GameObject" />
