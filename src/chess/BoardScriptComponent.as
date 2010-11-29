@@ -34,13 +34,37 @@ package chess
 		{
 			_eventManager = getDependency(EventManager);		
 			_eventManager.registerListener("ready", this, readyMessage);
-			_eventManager.registerListener("move", this, moveMessage);		
+			_eventManager.registerListener("move", this, moveMessage);
+			
+			setupBoard();
 		}
+		
+		/**
+		 * Unregister from event manager
+		 */
+		public override function destroy():void
+		{
+			clearBoard();
+			_eventManager.unregisterListener("ready", this, readyMessage);
+			_eventManager.unregisterListener("move", this, moveMessage);
+			_eventManager = null;
+		}		
+
+		public function readyMessage(event:*):void
+		{
+			trace("readyMessage");
+		}		
+
+		public function moveMessage(event:*):void
+		{
+			trace("moveMessage");
+		}		
+
 		
 		/**
 		 * Set up the squares and pieces
 		 */
-		public override function start():void 
+		public function setupBoard():void 
 		{
 			// Reset the squares and pieces dictionaries
 			_squares = new Dictionary(true);
@@ -290,11 +314,10 @@ package chess
 				piece.getComponent( TRANSFORM_COMPONENT ).position = piece.getComponent(TRANSFORM_COMPONENT).position;
 			}
 		}
-		
 		/**
 		 * Clear the piece and square dictionaries
 		 */
-		public override function stop():void
+		public function clearBoard():void
 		{
 			for ( var key:String in _squares )
 			{
@@ -338,27 +361,5 @@ package chess
 			_squaresByBaseclip = null;
 			_labelsBySquares = null;
 		}
-		
-		/**
-		 * Unregister from event manager
-		 */
-		public override function destroy():void
-		{
-			_eventManager.unregisterListener("ready", this, readyMessage);
-			_eventManager.unregisterListener("move", this, moveMessage);
-			_eventManager = null;
-			
-			
-		}		
-
-		public function readyMessage(event:*):void
-		{
-			trace("readyMessage");
-		}		
-
-		public function moveMessage(event:*):void
-		{
-			trace("moveMessage");
-		}		
 	}
 }
