@@ -38,7 +38,7 @@
       <dep id="AS3" />
       <dep id="as3reflect:MetaData" />
     </script>
-    <script name="C:\Development\client\src\chess\BoardScriptComponent.as" mod="1290995083381" size="5816" optimizedsize="4065">
+    <script name="C:\Development\client\src\chess\BoardScriptComponent.as" mod="1290995525447" size="5863" optimizedsize="4084">
       <def id="chess:BoardScriptComponent" />
       <pre id="components:ScriptComponent" />
       <dep id="chess.pieces:BlackKingRenderComponent" />
@@ -1351,8 +1351,8 @@
       <dep id="trace" />
       <dep id="chess:GameScene" />
       <dep id="core:SceneManager" />
-      <dep id="handlers:RoomHandler" />
       <dep id="core:MemoryManager" />
+      <dep id="handlers:RoomHandler" />
       <dep id="handlers:MessageHandler" />
       <dep id="handlers:ConnectionHandler" />
       <dep id="core:GameObject" />
