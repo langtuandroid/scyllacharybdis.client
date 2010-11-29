@@ -6,11 +6,15 @@ package chess
 	import core.EventManager;
 	import components.ScriptComponent;
 	import components.TransformComponent;
+	import events.EngineEvent;
 	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	import org.casalib.math.geom.Point3d;
 	import chess.pieces.*;
+	import org.casalib.util.ArrayUtil;
 
 	/**
 	 */
@@ -25,7 +29,7 @@ package chess
 		private var _pieces:Dictionary = null;				// Hash map of pieces with themselves as keys
 		
 		private var _squaresByLabel:Dictionary = null;		// Hash map of square game objects indexed by their alphanumeric label
-		private var _squaresByBaseclip:Dictionary = null; 	// Hash map of square game objects indexed by their renderable's baseclip
+		private var _piecesByLabel:Dictionary = null;
 		private var _labelsByPiece:Dictionary = null 		// Hash map of alphanumeric labels indexed by piece
 		private var _labelsBySquares:Dictionary = null;		// Hash map of alphanumeric labels indexed by squares
 			
@@ -35,19 +39,13 @@ package chess
 			_eventManager = getDependency(EventManager);		
 			_eventManager.registerListener("ready", this, readyMessage);
 			_eventManager.registerListener("move", this, moveMessage);		
-		}
-		
-		/**
-		 * Set up the squares and pieces
-		 */
-		public override function start():void 
-		{
+			
 			// Reset the squares and pieces dictionaries
 			_squares = new Dictionary(true);
 			_pieces = new Dictionary(true);
-			_labelsByPiece = new Dictionary(true);
 			_squaresByLabel = new Dictionary(true);
-			_squaresByBaseclip = new Dictionary(true);
+			_piecesByLabel = new Dictionary(true);
+			_labelsByPiece = new Dictionary(true);
 			_labelsBySquares = new Dictionary(true);
 			
 			// Init some variables for placement
@@ -90,8 +88,7 @@ package chess
 					// Add the square to the dictionaries
 					_squares[square] = square;
 					_squaresByLabel[ col + row ] = square;
-					_squaresByBaseclip[square.getComponent( RENDER_COMPONENT).baseclip] = square;
-					_labelsBySquares[square] = key;
+					_labelsBySquares[square] = col + row;
 					
 					
 					// Decrement row
@@ -215,9 +212,11 @@ package chess
 						// Add piece to data structures
 						_pieces[piece] = piece;
 						_labelsByPiece[piece] = key;
+						_piecesByLabel[key] = piece;
 						
 						// Add event listener to handle user dragging and dropping piece to move it
 						piece.addEventListener( ChessEvent.DROP, onDrop, false, 0, true );
+						piece.addEventListener( ChessEvent.BRING_CHILD_TO_TOP, onBringChildToTop, false, 0, true );
 						
 						// Place piece ( initial sizing is handled by render component )
 						// Put it at the same position as the square
@@ -253,49 +252,118 @@ package chess
 			}
 		}
 		
+		private function onBringChildToTop( e:ChessEvent ):void
+		{
+			// Child to bring to top
+			var topChild:GameObject = e.data as GameObject;
+			
+			// Get all the render components of the board's children
+			var renderComponents:Array = new Array();
+			
+			for each ( var child:GameObject in owner.children )
+			{
+				renderComponents.push(child.getComponent(RENDER_COMPONENT));
+			}
+			
+			// Sort them
+			renderComponents.sortOn( "comparator", Array.NUMERIC );
+			
+			// Get the max depth
+			var maxDepth:Number = renderComponents[renderComponents.length - 1].comparator;
+			
+			// Set the child to be brought to the top's z
+			topChild.position = new Point3d( topChild.position.x, topChild.position.y, maxDepth + 1 );
+			
+			// Sort again
+			renderComponents.sortOn( "comparator", Array.NUMERIC );
+			
+			// Bring z values that need it back down by one to "collapse" the z values
+			for ( var i:int = 1; i < renderComponents.length; i++ )
+			{
+				if ( renderComponents[i].comparator - renderComponents[i - 1].comparator > 1 )
+				{
+					renderComponents[i].owner.position = new Point3d( renderComponents[i].owner.position.x,
+																	  renderComponents[i].owner.position.y,
+																	  renderComponents[i].owner.position.z - 1);
+				}
+			}
+		}
+		
 		private function onDrop( e:ChessEvent ):void
 		{
-			// Get the drop target and piece out of the event
-			var dropTarget:DisplayObject = e.data.dropTarget as DisplayObject;
+			// Calculate drop target
 			var piece:GameObject = e.data.piece as GameObject;
+			var mousePos:Point = e.data.mousePos as Point;
+			var dropTarget:GameObject = detectCollisions( mousePos );
 			
 			// If there was a drop target
 			if ( dropTarget != null )
 			{
-				// Try to get square that is the drop target
-				var square:GameObject = _squaresByBaseclip[dropTarget];
-				
-				// If the drop target was a square
-				if ( square != null )
+				if ( _piecesByLabel[_labelsBySquares[dropTarget]] != null && _piecesByLabel[_labelsBySquares[dropTarget]] != piece )
 				{
-					// Set the piece's x and y (not Z!) position to the target square's position
-					var newPosition:Point3d = new Point3d( square.getComponent( TRANSFORM_COMPONENT ).position.x,
-														   square.getComponent( TRANSFORM_COMPONENT ).position.y,
-														   piece.getComponent( TRANSFORM_COMPONENT ).position.z );
-				
-					piece.getComponent( TRANSFORM_COMPONENT ).position = newPosition;
+					// For now, just disable instead of tweening to a "captured pieces" area
+					//_piecesByLabel[_labelsBySquares[dropTarget]].enabled = false;	
 					
-					// Updtate the piece's position in the labels dictionary
-					_labelsByPiece[piece] = _labelsBySquares[_squaresByBaseclip[dropTarget]];
+					delete _labelsByPiece[ _piecesByLabel[_labelsBySquares[dropTarget]]];
+					delete _piecesByLabel[_labelsBySquares[dropTarget]];
+					
 				}
-				else
-				{
-					// Reset the piece's position
-					piece.getComponent( TRANSFORM_COMPONENT ).position = piece.getComponent(TRANSFORM_COMPONENT).position;
-				}
+				
+				// Set the piece's x and y (not Z!) position to the target square's position
+				var newPosition:Point3d = new Point3d( dropTarget.position.x,
+													   dropTarget.position.y,
+													   piece.position.z );
+				
+				
+				piece.position = newPosition;
+				
+				// Updtate the piece's position in the labels dictionary
+				delete _labelsByPiece[ _piecesByLabel[ _labelsByPiece[piece] ] ];
+				delete _piecesByLabel[ _labelsByPiece[piece] ];
+				_labelsByPiece[piece] = _labelsBySquares[ dropTarget ];
+				_piecesByLabel[_labelsBySquares[dropTarget]] = piece;
+				
 			}
 			else
 			{
 				// Reset the piece's position
-				piece.getComponent( TRANSFORM_COMPONENT ).position = piece.getComponent(TRANSFORM_COMPONENT).position;
+				piece.position = piece.position;
 			}
 		}
 		
-		/**
-		 * Clear the piece and square dictionaries
-		 */
-		public override function stop():void
+		private function detectCollisions( point:Point ):GameObject
 		{
+			// The possible drop target and the intersection between the piece and it
+			var dropTarget:GameObject = null;
+			var intersection:Rectangle = null;
+			
+			
+			for each ( var square:GameObject in _squares ) //TODO Soon this will be a list of all available moves for the piece, not all squares
+			{
+				// Get the rectangle of the square
+				var squareClip:MovieClip = square.getComponent(RENDER_COMPONENT).baseclip;
+				
+				// If there is an intersection between the two pieces
+				if ( squareClip.hitTestPoint( point.x, point.y ) )
+				{
+					// If there's no previous drop target
+					dropTarget = square;
+					break;
+				}
+			}
+			
+			return dropTarget;
+		}
+		
+		/**
+		 * Unregister from event manager and clear the piece and square dictionaries
+		 */
+		public override function destroy():void
+		{
+			_eventManager.unregisterListener("ready", this, readyMessage);
+			_eventManager.unregisterListener("move", this, moveMessage);
+			_eventManager = null;
+			
 			for ( var key:String in _squares )
 			{
 				delete _squares[key];
@@ -303,21 +371,22 @@ package chess
 			
 			for ( key in _pieces )
 			{
-				if ( _pieces[key] )
+				if ( _pieces[key] && _pieces[key].hasEventListener( ChessEvent.DROP ) )
 				{
 					_pieces[key].removeEventListener( ChessEvent.DROP, onDrop );	
 				}
+				
 				delete _pieces[key];
+			}
+			
+			for ( key in _piecesByLabel )
+			{
+				delete _piecesByLabel[key];
 			}
 			
 			for ( key in _labelsByPiece )
 			{
 				delete _labelsByPiece[key];
-			}
-			
-			for ( key in _squaresByBaseclip )
-			{
-				delete _squaresByBaseclip[key];
 			}
 			
 			for ( key in _squaresByLabel )
@@ -335,22 +404,21 @@ package chess
 			_pieces = null;
 			_labelsByPiece = null;
 			_squaresByLabel = null;
-			_squaresByBaseclip = null;
+			_piecesByLabel = null;
 			_labelsBySquares = null;
-		}
-		
-		/**
-		 * Unregister from event manager
-		 */
-		public override function destroy():void
-		{
-			_eventManager.unregisterListener("ready", this, readyMessage);
-			_eventManager.unregisterListener("move", this, moveMessage);
-			_eventManager = null;
-			
 			
 		}		
 
+		public override function start():void
+		{
+			
+		}
+		
+		public override function stop():void
+		{
+			
+		}
+		
 		public function readyMessage(event:*):void
 		{
 			trace("readyMessage");

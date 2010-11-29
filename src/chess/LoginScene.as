@@ -34,18 +34,16 @@ package chess
 		
 		public override function show():void
 		{
-			if( !_loginBox.enabled )
-			{
+			
 				_loginBox.enabled = true;
-			}
+			
 		}
 		
 		public override function hide():void
 		{
-			if ( _loginBox.enabled )
-			{
+			
 				_loginBox.enabled = false;
-			}
+			
 		}
 		
 	}

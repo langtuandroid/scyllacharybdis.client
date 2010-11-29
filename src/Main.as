@@ -97,7 +97,7 @@
 			
 			// Push a game scene with a login scene on top 
 			_sceneManager.PushScene( GameScene );
-			_sceneManager.PushScene( LoginScene );
+			//_sceneManager.PushScene( LoginScene, false );
 		}
 		
 		private function onConnectionFail( data:* ):void

@@ -35,18 +35,12 @@ package chess
 		
 		public override function show():void
 		{
-			if( !_board.enabled )
-			{
-				_board.enabled = true;
-			}
+			_board.enabled = true;
 		}
 		
 		public override function hide():void
 		{
-			if ( _board.enabled )
-			{
-				_board.enabled = false;
-			}
+			_board.enabled = false;
 		}
 		
 		
