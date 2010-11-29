@@ -40,6 +40,36 @@ package chess
 			_eventManager.registerListener("ready", this, readyMessage);
 			_eventManager.registerListener("move", this, moveMessage);		
 			
+			setupBoard();
+		}
+		
+		/**
+		 * Unregister from event manager
+		 */
+		public override function destroy():void
+		{
+			clearBoard();
+			_eventManager.unregisterListener("ready", this, readyMessage);
+			_eventManager.unregisterListener("move", this, moveMessage);
+			_eventManager = null;
+		}		
+
+		public function readyMessage(event:*):void
+		{
+			trace("readyMessage");
+		}		
+
+		public function moveMessage(event:*):void
+		{
+			trace("moveMessage");
+		}		
+
+		
+		/**
+		 * Set up the squares and pieces
+		 */
+		public function setupBoard():void 
+		{
 			// Reset the squares and pieces dictionaries
 			_squares = new Dictionary(true);
 			_pieces = new Dictionary(true);
@@ -67,7 +97,7 @@ package chess
 				for ( var j:int = 0; j < 8; j++ )
 				{
 					// Make a square
-					var square:GameObject = MemoryManager.instantiate(GameObject, GameObject.dependencies);
+					var square:GameObject = MemoryManager.instantiate( GameObject );
 					
 					// Set its components
 					square.addComponent(TransformComponent);
@@ -199,7 +229,7 @@ package chess
 					if ( renderClass != null )
 					{
 						// Make a piece
-						var piece:GameObject = MemoryManager.instantiate(GameObject, GameObject.dependencies);
+						var piece:GameObject = MemoryManager.instantiate(GameObject);
 						
 						// Set its components
 						piece.addComponent(PieceScriptComponent);
@@ -356,14 +386,10 @@ package chess
 		}
 		
 		/**
-		 * Unregister from event manager and clear the piece and square dictionaries
+		 * Clear the piece and square dictionaries
 		 */
-		public override function destroy():void
+		public function clearBoard():void
 		{
-			_eventManager.unregisterListener("ready", this, readyMessage);
-			_eventManager.unregisterListener("move", this, moveMessage);
-			_eventManager = null;
-			
 			for ( var key:String in _squares )
 			{
 				delete _squares[key];
@@ -406,27 +432,6 @@ package chess
 			_squaresByLabel = null;
 			_piecesByLabel = null;
 			_labelsBySquares = null;
-			
-		}		
-
-		public override function start():void
-		{
-			
 		}
-		
-		public override function stop():void
-		{
-			
-		}
-		
-		public function readyMessage(event:*):void
-		{
-			trace("readyMessage");
-		}		
-
-		public function moveMessage(event:*):void
-		{
-			trace("moveMessage");
-		}		
 	}
 }
