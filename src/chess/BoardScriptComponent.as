@@ -69,7 +69,7 @@ package chess
 				for ( var j:int = 0; j < 8; j++ )
 				{
 					// Make a square
-					var square:GameObject = MemoryManager.instantiate(GameObject, GameObject.dependencies);
+					var square:GameObject = MemoryManager.instantiate( GameObject );
 					
 					// Set its components
 					square.addComponent(TransformComponent);
@@ -202,7 +202,7 @@ package chess
 					if ( renderClass != null )
 					{
 						// Make a piece
-						var piece:GameObject = MemoryManager.instantiate(GameObject, GameObject.dependencies);
+						var piece:GameObject = MemoryManager.instantiate(GameObject);
 						
 						// Set its components
 						piece.addComponent(PieceScriptComponent);
