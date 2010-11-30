@@ -20,16 +20,6 @@ package chess.pieces
 			super();
 		}
 		
-		public override function start():void
-		{
-			var renderComponent:RenderComponent = owner.getComponent( RENDER_COMPONENT );
-			
-			if ( renderComponent != null )
-			{
-				renderComponent.baseclip.removeEventListener( MouseEvent.MOUSE_UP, onMouseUp );
-			}
-		}
-		
 		public override function onMouseDown( e:MouseEvent ):void
 		{
 			
@@ -41,8 +31,6 @@ package chess.pieces
 				owner.dispatchEvent( new ChessEvent( ChessEvent.BRING_CHILD_TO_TOP, owner ) );
 			
 				renderComponent.baseclip.startDrag();
-				
-				renderComponent.baseclip.addEventListener( MouseEvent.MOUSE_UP, onMouseUp, false, 0, true);
 			}
 		}
 		
@@ -51,9 +39,7 @@ package chess.pieces
 			var renderComponent:RenderComponent = owner.getComponent( RENDER_COMPONENT );
 			
 			if ( renderComponent != null )
-			{
-				renderComponent.baseclip.removeEventListener( MouseEvent.MOUSE_UP, onMouseUp );
-				
+			{	
 				renderComponent.baseclip.stopDrag();
 				
 				var data:Object = new Object();

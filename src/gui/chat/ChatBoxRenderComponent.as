@@ -42,16 +42,18 @@ package gui.chat
 		public override function start():void
 		{
 			baseclip.graphics.beginFill( 0xF4AD95 );
-			baseclip.graphics.drawRect( 0, 0, 300, 300 );
+			baseclip.graphics.drawRect( 0, 0, 200, 250 );
 			baseclip.graphics.endFill();
 			
 			_messageText.move( 10, 10 );
-			_inputText.move( 10, 20 + _messageText.height );
+			_messageText.setSize( 180, 100 );
+			_inputText.move( 10, 120 );
+			_inputText.width = 180;
 			
 			baseclip.addChild( _messageText );
 			baseclip.addChild( _inputText );
 			
-			_inputText.addEventListener( ComponentEvent.ENTER, owner.getComonent( SCRIPT_COMPONENT ).onInputTextEnter, false, 0, true );
+			_inputText.addEventListener( ComponentEvent.ENTER, owner.getComponent( SCRIPT_COMPONENT ).onInputTextEnter, false, 0, true );
 		}
 		
 		public override function stop():void
@@ -60,7 +62,7 @@ package gui.chat
 			baseclip.removeChild( _inputText );
 			baseclip.graphics.clear();
 			
-			_inputText.removeEventListener( ComponentEvent.ENTER, owner.getComonent( SCRIPT_COMPONENT ).onInputTextEnter );
+			_inputText.removeEventListener( ComponentEvent.ENTER, owner.getComponent( SCRIPT_COMPONENT ).onInputTextEnter );
 		}
 		
 	}

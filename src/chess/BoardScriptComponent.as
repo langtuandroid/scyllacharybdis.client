@@ -12,6 +12,8 @@ package chess
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
+	import gui.chat.ChatBoxRenderComponent;
+	import gui.chat.ChatBoxScriptComponent;
 	import org.casalib.math.geom.Point3d;
 	import chess.pieces.*;
 	import org.casalib.util.ArrayUtil;
@@ -250,6 +252,14 @@ package chess
 							break;
 				}	
 			}
+			
+			var chatBox:GameObject = MemoryManager.instantiate( GameObject, GameObject.dependencies );
+			chatBox.addComponent( ChatBoxRenderComponent );
+			chatBox.addComponent( ChatBoxScriptComponent, ChatBoxScriptComponent.dependencies );
+			
+			chatBox.position = new Point3d( 600, 450, depth);
+			
+			owner.addChild(chatBox);
 		}
 		
 		private function onBringChildToTop( e:ChessEvent ):void

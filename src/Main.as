@@ -65,7 +65,6 @@
 			// Create the event manager
 			_eventManager = MemoryManager.instantiate(EventManager);
 			
-			
 			_listerner = MemoryManager.instantiate( EventListener, [EventManager] );			
 
 			// Create a network layer
@@ -85,10 +84,6 @@
 			_eventManager.registerListener("CONNECTION_FAILED", this, onConnectionFail );
 			
 			_eventManager.fireEvent("NETWORK_CONNECT");
-			
-			
-			// On login success pop the screen
-			//_sceneManager.PopScene();
 		}
 		
 		private function onConnectionSuccess( data:* ):void
@@ -97,7 +92,7 @@
 			
 			// Push a game scene with a login scene on top 
 			_sceneManager.PushScene( GameScene );
-			//_sceneManager.PushScene( LoginScene, false );
+			//_sceneManager.PushScene( LoginScene );
 		}
 		
 		private function onConnectionFail( data:* ):void
@@ -109,9 +104,6 @@
 		
 		private function onLoginSuccess( data:* ):void
 		{
-			//_eventManager.unregisterListener("LOGIN_SUCCESS", this, onLoginSuccess);
-			
-			trace("Popping Scene");
 			_sceneManager.PopScene();
 		}
 		

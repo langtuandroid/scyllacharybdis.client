@@ -49,16 +49,17 @@ package gui.chat
 			{
 				_eventManager.fireEvent("SEND_CHATMESSAGE", msg);
 				displayMessage( msg );
+				renderable.inputText.text = "";
 			}
 		}
 		
-		private function displayMessage( data:* )
+		private function displayMessage( data:* ):void
 		{
 			var renderable:ChatBoxRenderComponent = owner.getComponent( RENDER_COMPONENT );
 			
 			var msg:String = data as String;
 			
-			renderable.messageText.appendText( msg );
+			renderable.messageText.appendText( msg + "\n");
 		}
 		
 	}
