@@ -283,7 +283,7 @@ package chess
 				}	
 			}
 			
-			var chatBox:GameObject = MemoryManager.instantiate( GameObject, GameObject.dependencies );
+			var chatBox:GameObject = MemoryManager.instantiate( GameObject );
 			chatBox.addComponent( ChatBoxRenderComponent );
 			chatBox.addComponent( ChatBoxScriptComponent, ChatBoxScriptComponent.dependencies );
 			
