@@ -13,17 +13,21 @@ package chess
 	{
 		private var _board:GameObject;
 		
-		public function GameScene() 
-		{
-			super();
-			
-		}
-		
 		public override function awake():void
 		{
-			_board = MemoryManager.instantiate( GameObject, GameObject.dependencies );
+			_board = MemoryManager.instantiate( GameObject );
 			_board.addComponent( BoardScriptComponent, [EventManager]);
 			_board.addComponent( BoardRenderComponent );
+		}
+		
+		public override function start():void
+		{
+			addToScene( _board );
+		}
+		
+		public override function stop():void
+		{
+			removeFromScene( _board );
 		}
 		
 		public override function destroy():void
@@ -32,19 +36,6 @@ package chess
 			
 			_board = null;
 		}
-		
-		public override function show():void
-		{
-			_board.enabled = true;
-		}
-		
-		public override function hide():void
-		{
-			_board.enabled = false;
-		}
-		
-		
-		
+	
 	}
-
 }
