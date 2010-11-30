@@ -47,8 +47,13 @@ package gui.chat
 			
 			if ( msg != "" )
 			{
+				// Send the message to the other player
 				_eventManager.fireEvent("SEND_CHATMESSAGE", msg);
+				
+				// Append the message to the text area
 				displayMessage( msg );
+				
+				// Clear input text
 				renderable.inputText.text = "";
 			}
 		}
@@ -59,9 +64,11 @@ package gui.chat
 			
 			var msg:String = data as String;
 			
+			// Add the message to the text area
 			renderable.messageText.appendText( msg + "\n");
+			
+			// Move carat to the bottom so message is always visible
+			renderable.messageText.verticalScrollPosition = renderable.messageText.maxVerticalScrollPosition;
 		}
-		
 	}
-
 }
