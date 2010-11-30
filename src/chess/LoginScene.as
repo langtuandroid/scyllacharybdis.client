@@ -7,45 +7,33 @@ package chess
 	import gui.login.*;
 	
 	/**
-	 * ...
-	 * @author 
 	 */
 	public class LoginScene extends SceneObject 
 	{
 		private var _loginBox:GameObject;
 		
-		public function LoginScene() 
-		{
-			
-		}
-		
 		public override function awake():void
 		{
-			_loginBox = MemoryManager.instantiate( GameObject, GameObject.dependencies );
+			_loginBox = MemoryManager.instantiate( GameObject );
 			_loginBox.addComponent(LoginBoxScriptComponent, LoginBoxScriptComponent.dependencies);
 			_loginBox.addComponent(LoginBoxRenderComponent);
 		}
+		
+		public override function start():void
+		{
+			addToScene( _loginBox );
+		}
+		
+		public override function stop():void
+		{
+			removeFromScene( _loginBox );
+		}
+		
 		
 		public override function destroy():void
 		{
 			MemoryManager.destroy( _loginBox );
 			_loginBox = null;
 		}
-		
-		public override function show():void
-		{
-			
-				_loginBox.enabled = true;
-			
-		}
-		
-		public override function hide():void
-		{
-			
-				_loginBox.enabled = false;
-			
-		}
-		
 	}
-
 }
