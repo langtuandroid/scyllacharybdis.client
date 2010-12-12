@@ -12,12 +12,12 @@ package  handlers
 	 */
 	public class BoardHandler extends BaseObject
 	{
-		private var _eventManager:EventManager;
-
 		public override final function getType():String 
 		{
 			return "BOARD_HANDLER"; 
 		}		
+
+		private var _eventManager:EventManager;
 		
 		/**
 		 * Override awake and create any variables and listeners.
