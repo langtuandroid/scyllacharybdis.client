@@ -14,6 +14,11 @@ package  handlers
 	{
 		private var _eventManager:EventManager;
 
+		public override final function getType():String 
+		{
+			return "BOARD_HANDLER"; 
+		}		
+		
 		/**
 		 * Override awake and create any variables and listeners.
 		 */
