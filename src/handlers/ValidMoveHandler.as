@@ -11,6 +11,11 @@ package  handlers
 	 */
 	public class ValidMoveHandler extends BaseObject
 	{
+		public override final function getType():String 
+		{
+			return "VALID_MOVE_HANDLER"; 
+		}		
+		
 		private var _eventManager:EventManager;
 
 		/**
