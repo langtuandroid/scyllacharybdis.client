@@ -26,6 +26,9 @@
 	import handlers.LoginHandler;
 	import handlers.RoomHandler;
 	import handlers.MessageHandler;
+	import handlers.MoveHandler;
+	import handlers.BoardHandler;
+	import handlers.ValidMoveHandler;
 	
 	/**
 	 */
@@ -68,11 +71,19 @@
 			_listerner = MemoryManager.instantiate( EventListener, [EventManager] );			
 
 			// Create a network layer
-			_networkObject = MemoryManager.instantiate(NetworkObject);			
+			_networkObject = MemoryManager.instantiate(NetworkObject);
+			
+			// Base Handlers
 			_networkObject.addComponent(ConnectionHandler, [EventManager]);
 			_networkObject.addComponent(LoginHandler, [EventManager]);
 			_networkObject.addComponent(RoomHandler, [EventManager]);
 			_networkObject.addComponent(MessageHandler, [EventManager]);
+			
+			// Game Handlers
+			_networkObject.addComponent(MoveHandler, [EventManager]);
+			_networkObject.addComponent(BoardHandler, [EventManager]);
+			_networkObject.addComponent(ValidMoveHandler, [EventManager]);
+			
 			
 			// Create a scene manager
 			_sceneManager = MemoryManager.instantiate( SceneManager );
@@ -91,8 +102,8 @@
 			_eventManager.registerListener("LOGIN_SUCCESS", this, onLoginSuccess);
 			
 			// Push a game scene with a login scene on top 
-			_sceneManager.PushScene( GameScene );
-			//_sceneManager.PushScene( LoginScene );
+			//_sceneManager.PushScene( GameScene );
+			_sceneManager.PushScene( LoginScene );
 		}
 		
 		private function onConnectionFail( data:* ):void
