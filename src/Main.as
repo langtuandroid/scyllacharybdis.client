@@ -102,7 +102,6 @@
 			_eventManager.registerListener("LOGIN_SUCCESS", this, onLoginSuccess);
 			
 			// Push a game scene with a login scene on top 
-			_sceneManager.PushScene( GameScene );
 			_sceneManager.PushScene( LoginScene );
 		}
 		
@@ -115,7 +114,7 @@
 		
 		private function onLoginSuccess( data:* ):void
 		{
-			_sceneManager.PopScene();
+			_sceneManager.PushScene( GameScene );
 		}
 		
 		private function onLoginFail( data:* ):void
