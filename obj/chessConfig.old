@@ -25,6 +25,7 @@
       <path-element>C:\Development\client\lib\SC.swc</path-element>
       <path-element>C:\Development\client\lib\StandardComponents.swc</path-element>
       <path-element>C:\Development\client\lib\AstraLib.swc</path-element>
+      <path-element>C:\Development\client\lib\GraphAPI_Web_1_5.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

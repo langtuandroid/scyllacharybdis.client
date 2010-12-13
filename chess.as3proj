@@ -54,6 +54,7 @@
     <element path="lib\SC.swc" />
     <element path="lib\StandardComponents.swc" />
     <element path="lib\AstraLib.swc" />
+    <element path="lib\GraphAPI_Web_1_5.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

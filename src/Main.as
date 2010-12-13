@@ -29,6 +29,7 @@
 	import handlers.MoveHandler;
 	import handlers.BoardHandler;
 	import handlers.ValidMoveHandler;
+	import FbObject;
 	
 	/**
 	 */
@@ -41,6 +42,7 @@
 		private var _listerner:EventListener;
 		private var _networkObject:NetworkObject;
 		private var _sceneManager:SceneManager;
+		private var _facebook:FbObject;
 		
 		
 		public function Main():void 
