@@ -18,6 +18,7 @@ package chess
 			_board = MemoryManager.instantiate( GameObject );
 			_board.addComponent( BoardScriptComponent, [EventManager]);
 			_board.addComponent( BoardRenderComponent );
+			
 		}
 		
 		public override function start():void

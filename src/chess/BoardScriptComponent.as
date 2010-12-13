@@ -14,6 +14,11 @@ package chess
 	import flash.utils.Dictionary;
 	import gui.chat.ChatBoxRenderComponent;
 	import gui.chat.ChatBoxScriptComponent;
+	import models.BoardModel;
+	import models.CreateRoomModel;
+	import models.MovePieceModel;
+	import models.RoomModel;
+	import models.ValidMoveModel;
 	import org.casalib.math.geom.Point3d;
 	import chess.pieces.*;
 	import org.casalib.util.ArrayUtil;
@@ -38,39 +43,138 @@ package chess
 		
 		public override function awake():void
 		{
-			_eventManager = getDependency(EventManager);		
-			_eventManager.registerListener("ready", this, readyMessage);
-			_eventManager.registerListener("move", this, moveMessage);		
+			_eventManager = getDependency(EventManager);	
+
+			_eventManager.registerListener("CREATEROOM_SUCCESS", this, createRoomSuccess );
+			_eventManager.registerListener("CREATEROOM_FAILED", this, createRoomFailed );
+			_eventManager.registerListener("JOINROOM_SUCCESS", this, joinRoomSuccess );
+			_eventManager.registerListener("JOINROOM_FAILED", this, joinRoomFailed );
 			
-			setupBoard();
+			_eventManager.registerListener("START_GAME", this, startGame);
+			_eventManager.registerListener("BOARD_RESULTS", this, boardResults );
+			_eventManager.registerListener("VALID_MOVE_RESULTS", this, validMoveResults );
+			_eventManager.registerListener("MOVE_RESULTS", this, moveResults );
+
+			
 		}
 		
+			
 		/**
 		 * Unregister from event manager
 		 */
 		public override function destroy():void
 		{
 			clearBoard();
-			_eventManager.unregisterListener("ready", this, readyMessage);
-			_eventManager.unregisterListener("move", this, moveMessage);
+			_eventManager.unregisterListener("CREATEROOM_SUCCESS", this, createRoomSuccess );
+			_eventManager.unregisterListener("CREATEROOM_FAILED", this, createRoomFailed );
+			_eventManager.unregisterListener("JOINROOM_SUCCESS", this, joinRoomSuccess );
+			_eventManager.unregisterListener("JOINROOM_FAILED", this, joinRoomFailed );
+			
+			_eventManager.unregisterListener("START_GAME", this, startGame);
+			_eventManager.unregisterListener("BOARD_RESULTS", this, boardResults );
+			_eventManager.unregisterListener("VALID_MOVE_RESULTS", this, validMoveResults );
+			_eventManager.unregisterListener("MOVE_RESULTS", this, moveResults );			
 			_eventManager = null;
 		}		
 
-		public function readyMessage(event:*):void
+		/**
+		 * Create a game 
+		 */
+		public function createGame(roomName:String):void
 		{
-			trace("readyMessage");
+			_eventManager.fireEvent( "NETWORK_CREATEROOM", new CreateRoomModel("TestGameRoom", "", 2, "sfsChess", "com.pikitus.games.chess.SFSChess") );
+		}
+		
+		/**
+		 * Join a game
+		 */
+		public function joinGame(roomName:String):void
+		{
+			_eventManager.fireEvent( "NETWORK_JOINROOM", new RoomModel("TestGameRoom") );
+		}
+
+		/**
+		 * Create room success event handler
+		 */
+		public function createRoomSuccess( data:* ):void
+		{
+			trace("Network Driver: createRoomSuccess");
+		}
+
+		/**
+		 * Create room failed event handler
+		 */
+		public function createRoomFailed( data:* ):void
+		{
+			trace("Network Driver: createRoomFailed");
+		}
+
+		/**
+		 * Join room success event handler
+		 */
+		public function joinRoomSuccess( data:* ):void
+		{
+			trace("Network Driver: joinRoomSuccess");
+		}
+		
+		/**
+		 * Join room failed event handler
+		 */
+		public function joinRoomFailed( data:* ):void
+		{
+			trace("Network Driver: joinRoomFailed");
+		}
+		
+		/**
+		 * Server has 2 players so start the game handler
+		 */
+		public function startGame(event:*):void
+		{
+			_eventManager.fireEvent("GET_BOARD");
+			_eventManager.fireEvent("GET_VALID_MOVES");
 		}		
 
-		public function moveMessage(event:*):void
+		/**
+		 * Recieved the board from the server handler
+		 * @param	board
+		 */
+		public function boardResults( board:BoardModel ):void
 		{
-			trace("moveMessage");
-		}		
-
+			trace("Board Results: " + board );
+			setupBoard(board);
+		}
+		
+		/**
+		 * Recieved the valid moves from the server handler
+		 * @param	validMoves
+		 */
+		public function validMoveResults( validMoves:ValidMoveModel ):void
+		{
+			trace("Valid moves Results: " + validMoves );
+		}
+		
+		/**
+		 * Recieved the move results handler
+		 * @param	movePiece
+		 */
+		public function moveResults( movePiece:MovePieceModel ):void
+		{
+			if ( movePiece.valid ) {
+				trace("Valid Move");
+			} else {
+				trace("Invalid Move");
+			}
+			
+			// There should be turns in here somewhere
+			_eventManager.fireEvent("GET_BOARD");
+			_eventManager.fireEvent("GET_VALID_MOVES");
+		}
+		
 		
 		/**
 		 * Set up the squares and pieces
 		 */
-		public function setupBoard():void 
+		public function setupBoard( board:BoardModel ):void 
 		{
 			// Reset the squares and pieces dictionaries
 			_squares = new Dictionary(true);
@@ -353,8 +457,9 @@ package chess
 				var newPosition:Point3d = new Point3d( dropTarget.position.x,
 													   dropTarget.position.y,
 													   piece.position.z );
-				
-				
+
+				// FIXME: Fire the actual move event here.
+				_eventManager.fireEvent("MOVE_PIECE", new MovePieceModel("d2", "d4") );
 				piece.position = newPosition;
 				
 				// Updtate the piece's position in the labels dictionary
