@@ -102,7 +102,7 @@
 			_eventManager.registerListener("LOGIN_SUCCESS", this, onLoginSuccess);
 			
 			// Push a game scene with a login scene on top 
-			//_sceneManager.PushScene( GameScene );
+			_sceneManager.PushScene( GameScene );
 			_sceneManager.PushScene( LoginScene );
 		}
 		
