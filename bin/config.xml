@@ -11,9 +11,10 @@
 <SmartFoxConfig>
 
 	<!-- Mandatory Settings -->
-	<ip>sfs.pikitus.com</ip>
+	<!-- <ip>sfs.pikitus.com</ip> -->
+	<ip>127.0.0.1</ip>
 	<port>9933</port>
-	<zone>SimpleChat</zone>
+	<zone>Pikitus</zone>
 	<!-- End Mandatory Settings -->
 	
 	<debug>true</debug>
