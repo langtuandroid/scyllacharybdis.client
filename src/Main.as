@@ -119,8 +119,6 @@
 		private function onLoginSuccess( data:* ):void
 		{
 			_sceneManager.PushScene( DifficultyScene );
-			
-			//_networkObject.getComponent(BaseObject.ROOM_HANDLER).requestCreateRoom( new CreateRoomModel("test", "testy", 2, "sfsChess", "com.pikitus.games.chess.SFSChess" ) );
 		}
 		
 		private function onLoginFail( data:* ):void
