@@ -6,6 +6,7 @@ package gui.difficulty
 	import fl.controls.Button;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
+	import models.RandomGameModel;
 	
 	/**
 	 * ...
@@ -17,12 +18,17 @@ package gui.difficulty
 		
 		private var _listeners:Dictionary = null;
 		private var _eventManager:EventManager = null;
+		private var _randomGameModel:RandomGameModel;
 		
 		public static function get dependencies():Array { return [EventManager]; }
 		
 		public function DifficultyMenuScriptComponent() 
 		{
 			super();
+			_randomGameModel = new RandomGameModel;
+			_randomGameModel.area = "public";
+			_randomGameModel.gameType = "sfsChess";
+			_randomGameModel.gameExtension = "com.pikitus.games.chess.SFSChess";
 		}
 		
 		public override function awake():void
@@ -50,17 +56,25 @@ package gui.difficulty
 		
 		private function onEasyClick( e:MouseEvent ):void
 		{
-			_eventManager.fireEvent("JOIN_EASY_ROOM");
+			_randomGameModel.difficulty = "easy";
+			joinRandomRoom();
 		}
 		
 		private function onMediumClick( e:MouseEvent ):void
 		{
-			_eventManager.fireEvent("JOIN_MEDIUM_ROOM");
+			_randomGameModel.difficulty = "medium";
+			joinRandomRoom();
 		}
 		
 		private function onHardClick( e:MouseEvent ):void
 		{
-			_eventManager.fireEvent("JOIN_HARD_ROOM");
+			_randomGameModel.difficulty = "hard";
+			joinRandomRoom();
+		}
+		
+		private function joinRandomRoom():void
+		{
+			_eventManager.SendServerMessage("JOIN_RANDOM_ROOM", _randomGameModel );
 		}
 	}
 }

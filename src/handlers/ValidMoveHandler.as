@@ -57,7 +57,7 @@ package  handlers
 		 */
 		public function getValidMoves():void
 		{
-			var request:ExtensionRequest = new ExtensionRequest("GET_VALID_MOVES", owner.sfs.room);
+			var request:ExtensionRequest = new ExtensionRequest("GET_VALID_MOVES", owner.sfs.lastJoinedRoom);
 			owner.sfs.send(request);			
 		}
 

@@ -59,7 +59,7 @@ package  handlers
 		 */
 		public function getBoard():void
 		{
-			var request:ExtensionRequest = new ExtensionRequest("GET_BOARD", owner.sfs.room);
+			var request:ExtensionRequest = new ExtensionRequest("GET_BOARD", owner.sfs.lastJoinedRoom);
 			owner.sfs.send(request);			
 		}
 

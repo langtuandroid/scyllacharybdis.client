@@ -61,7 +61,7 @@ package handlers
 			var sfsObject:ISFSObject = new SFSObject();
 			sfsObject.putUtfString("from", move.from);
 			sfsObject.putUtfString("to", move.to);
-			var request:ExtensionRequest = new ExtensionRequest("MOVE_PIECE", owner.sfs.room);
+			var request:ExtensionRequest = new ExtensionRequest("MOVE_PIECE", owner.sfs.lastJoinedRoom);
 			owner.sfs.send(request, sfsObject);			
 		}
 
