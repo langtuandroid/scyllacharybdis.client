@@ -1,12 +1,14 @@
 ﻿package 
 {
 	
+	import chess.DifficultyScene;
 	import chess.LoginScene;
 	import chess.GameScene;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.getQualifiedSuperclassName;
+	import models.CreateRoomModel;
 	import org.casalib.math.geom.Point3d;
 	import core.BaseObject;
 	import core.GameObject;
@@ -116,7 +118,9 @@
 		
 		private function onLoginSuccess( data:* ):void
 		{
-			_sceneManager.PushScene( GameScene );
+			_sceneManager.PushScene( DifficultyScene );
+			
+			//_networkObject.getComponent(BaseObject.ROOM_HANDLER).requestCreateRoom( new CreateRoomModel("test", "testy", 2, "sfsChess", "com.pikitus.games.chess.SFSChess" ) );
 		}
 		
 		private function onLoginFail( data:* ):void
