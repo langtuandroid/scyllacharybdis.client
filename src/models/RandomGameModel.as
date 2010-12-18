@@ -1,4 +1,4 @@
-package models 
+package models
 {
 	import com.smartfoxserver.v2.protocol.serialization.SerializableSFSType;
 	/**
@@ -7,37 +7,46 @@ package models
 	 */
 	public class RandomGameModel implements SerializableSFSType
 	{
-		private var mGameType:String;
-		private var mGameExtension:String;
-		private var mDifficulty:String;
-		private var mArea:String;
+		private var _gameType:String;
+		private var _gameExtension:String;
+		private var _difficulty:String;
+		private var _area:String;
 		
-		public function get gameType():String { return mGameType; }
+		public function RandomGameModel(gameType:String="", gameExtension:String="", difficulty:String="", area:String="")
+		{
+			_gameType = gameType;
+			_gameExtension = gameExtension;
+			_difficulty = difficulty;
+			_area = area;
+		}
+			
+		
+		public function get gameType():String { return _gameType; }
 		
 		public function set gameType(value:String):void 
 		{
-			mGameType = value;
+			_gameType = value;
 		}
 		
-		public function get gameExtension():String { return mGameExtension; }
+		public function get gameExtension():String { return _gameExtension; }
 		
 		public function set gameExtension(value:String):void 
 		{
-			mGameExtension = value;
+			_gameExtension = value;
 		}
 		
-		public function get difficulty():String { return mDifficulty; }
+		public function get difficulty():String { return _difficulty; }
 		
 		public function set difficulty(value:String):void 
 		{
-			mDifficulty = value;
+			_difficulty = value;
 		}
 		
-		public function get area():String { return mArea; }
+		public function get area():String { return _area; }
 		
 		public function set area(value:String):void 
 		{
-			mArea = value;
+			_area = value;
 		}
 	}
 }
