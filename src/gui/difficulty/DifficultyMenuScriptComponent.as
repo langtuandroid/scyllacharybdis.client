@@ -10,6 +10,7 @@ package gui.difficulty
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
 	import models.RandomGameModel;
+	import models.SendModel;
 	
 	/**
 	 * ...
@@ -79,7 +80,7 @@ package gui.difficulty
 			trace("register listener");
 			_eventManager.registerListener("JOINROOM_SUCCESS", this, foundRoom );
 			
-			_eventManager.sendZoneServerMessage("JOIN_RANDOM_ROOM", _randomGameModel );
+			_eventManager.fireEvent("SEND_MODEL_TO_SERVER", new SendModel("JOIN_RANDOM_ROOM", "RandomGameModel", _randomGameModel ) );
 		}
 		
 		private function foundRoom(data:SFSEvent):void
