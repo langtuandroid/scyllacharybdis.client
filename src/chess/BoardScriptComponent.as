@@ -14,11 +14,11 @@ package chess
 	import flash.utils.Dictionary;
 	import gui.chat.ChatBoxRenderComponent;
 	import gui.chat.ChatBoxScriptComponent;
-	import models.BoardModel;
+	import models.chess.BoardModel;
+	import models.chess.MovePieceModel;
+	import models.chess.ValidMoveModel;
 	import models.CreateRoomModel;
-	import models.MovePieceModel;
 	import models.RoomModel;
-	import models.ValidMoveModel;
 	import org.casalib.math.geom.Point3d;
 	import chess.pieces.*;
 	import org.casalib.util.ArrayUtil;
