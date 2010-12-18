@@ -1,8 +1,11 @@
 package gui.difficulty 
 {
+	import chess.GameScene;
+	import com.smartfoxserver.v2.core.SFSEvent;
 	import com.smartfoxserver.v2.exceptions.SFSValidationError;
 	import components.ScriptComponent;
 	import core.EventManager;
+	import core.SceneManager;
 	import fl.controls.Button;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
@@ -18,9 +21,10 @@ package gui.difficulty
 		
 		private var _listeners:Dictionary = null;
 		private var _eventManager:EventManager = null;
+		private var _sceneManager:SceneManager = null;
 		private var _randomGameModel:RandomGameModel;
 		
-		public static function get dependencies():Array { return [EventManager]; }
+		public static function get dependencies():Array { return [EventManager, SceneManager]; }
 		
 		public function DifficultyMenuScriptComponent() 
 		{
@@ -38,6 +42,7 @@ package gui.difficulty
 			_listeners["hard"] = onHardClick;
 			
 			_eventManager = getDependency( EventManager );
+			_sceneManager = getDependency( SceneManager );
 		}
 		
 		public override function destroy():void
@@ -71,7 +76,19 @@ package gui.difficulty
 		
 		private function joinRandomRoom():void
 		{
+			trace("register listener");
+			_eventManager.registerListener("JOINROOM_SUCCESS", this, foundRoom );
+			
 			_eventManager.sendZoneServerMessage("JOIN_RANDOM_ROOM", _randomGameModel );
+		}
+		
+		private function foundRoom(data:SFSEvent):void
+		{
+			trace("unregister listener");
+			_eventManager.unregisterListener("JOINROOM_SUCCESS", this, foundRoom );
+
+			trace("found a room " + data.params);
+			_sceneManager.PushScene( GameScene );
 		}
 	}
 }
