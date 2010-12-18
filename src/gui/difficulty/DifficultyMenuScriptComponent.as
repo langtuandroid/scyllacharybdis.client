@@ -25,10 +25,7 @@ package gui.difficulty
 		public function DifficultyMenuScriptComponent() 
 		{
 			super();
-			_randomGameModel = new RandomGameModel;
-			_randomGameModel.area = "public";
-			_randomGameModel.gameType = "sfsChess";
-			_randomGameModel.gameExtension = "com.pikitus.games.chess.SFSChess";
+			_randomGameModel = new RandomGameModel("sfsChess", "com.pikitus.games.chess.SFSChess", "", "public");
 		}
 		
 		public override function awake():void
