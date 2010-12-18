@@ -71,7 +71,7 @@ package gui.difficulty
 		
 		private function joinRandomRoom():void
 		{
-			_eventManager.SendServerMessage("JOIN_RANDOM_ROOM", _randomGameModel );
+			_eventManager.sendZoneServerMessage("JOIN_RANDOM_ROOM", _randomGameModel );
 		}
 	}
 }
