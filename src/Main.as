@@ -28,9 +28,6 @@
 	import handlers.LoginHandler;
 	import handlers.RoomHandler;
 	import handlers.MessageHandler;
-	import handlers.MoveHandler;
-	import handlers.BoardHandler;
-	import handlers.ValidMoveHandler;
 	import FbObject;
 	
 	/**
@@ -83,12 +80,6 @@
 			_networkObject.addComponent(RoomHandler, [EventManager]);
 			_networkObject.addComponent(MessageHandler, [EventManager]);
 			
-			// Game Handlers
-			_networkObject.addComponent(MoveHandler, [EventManager]);
-			_networkObject.addComponent(BoardHandler, [EventManager]);
-			_networkObject.addComponent(ValidMoveHandler, [EventManager]);
-			
-			
 			// Create a scene manager
 			_sceneManager = MemoryManager.instantiate( SceneManager );
 		}
@@ -97,7 +88,6 @@
 		{
 			_eventManager.registerListener("CONNECTION_SUCCESS", this, onConnectionSuccess );
 			_eventManager.registerListener("CONNECTION_FAILED", this, onConnectionFail );
-			
 			_eventManager.fireEvent("NETWORK_CONNECT");
 		}
 		
