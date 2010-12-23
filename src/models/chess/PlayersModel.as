@@ -6,8 +6,8 @@ package models.chess
 	 */
 	public class PlayersModel 
 	{
-		var _player1:int;
-		var _player2:int;
+		private var _player1:int;
+		private var _player2:int;
 
 		public function PlayersModel(player1:int = 0, player2:int = 0) 
 		{

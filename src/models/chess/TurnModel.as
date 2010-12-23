@@ -4,7 +4,7 @@ package models.chess
 	 */
 	public class TurnModel 
 	{
-		var _turn:int;
+		private var _turn:int;
 		
 		public function TurnModel(turn:int = 0) 
 		{

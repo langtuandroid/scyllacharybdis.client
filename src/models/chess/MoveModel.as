@@ -5,14 +5,14 @@ package models.chess
 	 * ...
 	 * @author ...
 	 */
-	public class MovePieceModel implements SerializableSFSType
+	public class MoveModel implements SerializableSFSType
 	{
 		private var _from:String;
 		private var _to:String;
 		private var _type:int;
 		private var _valid:Boolean;
 		
-		public function MovePieceModel(from:String = null, to:String = null, type:int = 0, valid:Boolean=true) 
+		public function MoveModel(from:String = null, to:String = null, type:int = 0, valid:Boolean=true) 
 		{
 			_from = from;
 			_to = to;

@@ -1,5 +1,6 @@
 package chess
 {
+	import com.smartfoxserver.v2.core.SFSEvent;
 	import core.BaseObject;
 	import core.GameObject;
 	import core.MemoryManager;
@@ -15,7 +16,10 @@ package chess
 	import gui.chat.ChatBoxRenderComponent;
 	import gui.chat.ChatBoxScriptComponent;
 	import models.chess.BoardModel;
-	import models.chess.MovePieceModel;
+	import models.chess.GameOverModel;
+	import models.chess.MoveModel;
+	import models.chess.PlayersModel;
+	import models.chess.TurnModel;
 	import models.chess.ValidMoveModel;
 	import models.CreateRoomModel;
 	import models.RoomModel;
@@ -39,23 +43,20 @@ package chess
 		private var _piecesByLabel:Dictionary = null;
 		private var _labelsByPiece:Dictionary = null 		// Hash map of alphanumeric labels indexed by piece
 		private var _labelsBySquares:Dictionary = null;		// Hash map of alphanumeric labels indexed by squares
+		private var _players:PlayersModel;
+		private var _turn:TurnModel;
 			
 		
 		public override function awake():void
 		{
 			_eventManager = getDependency(EventManager);	
 
-			_eventManager.registerListener("CREATEROOM_SUCCESS", this, createRoomSuccess );
-			_eventManager.registerListener("CREATEROOM_FAILED", this, createRoomFailed );
-			_eventManager.registerListener("JOINROOM_SUCCESS", this, joinRoomSuccess );
-			_eventManager.registerListener("JOINROOM_FAILED", this, joinRoomFailed );
-			
-			_eventManager.registerListener("START_GAME", this, startGame);
-			_eventManager.registerListener("BOARD_RESULTS", this, boardResults );
-			_eventManager.registerListener("VALID_MOVE_RESULTS", this, validMoveResults );
-			_eventManager.registerListener("MOVE_RESULTS", this, moveResults );
-
-			
+			_eventManager.registerListener("CHESS_BOARD", this, boardResults );
+			_eventManager.registerListener("CHESS_VALID_MOVES", this, validMoveResults );
+			_eventManager.registerListener("CHESS_MOVE_RESULTS", this, moveResults );
+			_eventManager.registerListener("CHESS_PLAYERS", this, playersResults);
+			_eventManager.registerListener("CHESS_TURN", this, turnResults);
+			_eventManager.registerListener("CHESS_GAME_OVER", this, gameOverResults);
 		}
 		
 			
@@ -65,81 +66,23 @@ package chess
 		public override function destroy():void
 		{
 			clearBoard();
-			_eventManager.unregisterListener("CREATEROOM_SUCCESS", this, createRoomSuccess );
-			_eventManager.unregisterListener("CREATEROOM_FAILED", this, createRoomFailed );
-			_eventManager.unregisterListener("JOINROOM_SUCCESS", this, joinRoomSuccess );
-			_eventManager.unregisterListener("JOINROOM_FAILED", this, joinRoomFailed );
-			
-			_eventManager.unregisterListener("START_GAME", this, startGame);
-			_eventManager.unregisterListener("BOARD_RESULTS", this, boardResults );
-			_eventManager.unregisterListener("VALID_MOVE_RESULTS", this, validMoveResults );
-			_eventManager.unregisterListener("MOVE_RESULTS", this, moveResults );			
+			_eventManager.unregisterListener("CHESS_BOARD", this, boardResults );
+			_eventManager.unregisterListener("CHESS_VALID_MOVES", this, validMoveResults );
+			_eventManager.unregisterListener("CHESS_MOVE_RESULTS", this, moveResults );
+			_eventManager.unregisterListener("CHESS_PLAYERS", this, playersResults);
+			_eventManager.unregisterListener("CHESS_TURN", this, turnResults);
+			_eventManager.unregisterListener("CHESS_GAME_OVER", this, gameOverResults);
+	
 			_eventManager = null;
-		}		
-
-		/**
-		 * Create a game 
-		 */
-		public function createGame(roomName:String):void
-		{
-			_eventManager.fireEvent( "NETWORK_CREATEROOM", new CreateRoomModel("TestGameRoom", "", 2, "sfsChess", "com.pikitus.games.chess.SFSChess") );
-		}
-		
-		/**
-		 * Join a game
-		 */
-		public function joinGame(roomName:String):void
-		{
-			_eventManager.fireEvent( "NETWORK_JOINROOM", new RoomModel("TestGameRoom") );
-		}
-
-		/**
-		 * Create room success event handler
-		 */
-		public function createRoomSuccess( data:* ):void
-		{
-			trace("Network Driver: createRoomSuccess");
-		}
-
-		/**
-		 * Create room failed event handler
-		 */
-		public function createRoomFailed( data:* ):void
-		{
-			trace("Network Driver: createRoomFailed");
-		}
-
-		/**
-		 * Join room success event handler
-		 */
-		public function joinRoomSuccess( data:* ):void
-		{
-			trace("Network Driver: joinRoomSuccess");
-		}
-		
-		/**
-		 * Join room failed event handler
-		 */
-		public function joinRoomFailed( data:* ):void
-		{
-			trace("Network Driver: joinRoomFailed");
-		}
-		
-		/**
-		 * Server has 2 players so start the game handler
-		 */
-		public function startGame(event:*):void
-		{
-			_eventManager.fireEvent("GET_BOARD");
-			_eventManager.fireEvent("GET_VALID_MOVES");
 		}		
 
 		/**
 		 * Recieved the board from the server handler
 		 * @param	board
 		 */
-		public function boardResults( board:BoardModel ):void
+		public function boardResults( evt:SFSEvent ):void
 		{
+			var board:BoardModel = evt.params.getClass("BoardModel");
 			trace("Board Results: " + board );
 			setupBoard(board);
 		}
@@ -148,8 +91,9 @@ package chess
 		 * Recieved the valid moves from the server handler
 		 * @param	validMoves
 		 */
-		public function validMoveResults( validMoves:ValidMoveModel ):void
+		public function validMoveResults(evt:SFSEvent):void
 		{
+			var validMoves:ValidMoveModel = evt.params.getClass("ValidMoveModel");
 			trace("Valid moves Results: " + validMoves );
 		}
 		
@@ -157,19 +101,36 @@ package chess
 		 * Recieved the move results handler
 		 * @param	movePiece
 		 */
-		public function moveResults( movePiece:MovePieceModel ):void
+		public function moveResults( evt:SFSEvent):void
 		{
+			var movePiece:MoveModel = evt.params.getClass("MoveModel");
+			trace("Player Move Results: " + movePiece);
 			if ( movePiece.valid ) {
 				trace("Valid Move");
 			} else {
 				trace("Invalid Move");
 			}
-			
-			// There should be turns in here somewhere
-			_eventManager.fireEvent("GET_BOARD");
-			_eventManager.fireEvent("GET_VALID_MOVES");
+		}
+
+		public function playersResults(evt:SFSEvent):void
+		{
+			var players:PlayersModel  = evt.params.getClass("PlayersModel");
+			_players = players;
+			trace("Player Results: " + players);
 		}
 		
+		public function turnResults(evt:SFSEvent):void
+		{
+			var turn:TurnModel = evt.params.getClass("TurnModel");
+			_turn = turn;
+			trace("Turn Results: " + turn);
+		}
+
+		public function gameOverResults(evt:SFSEvent):void
+		{
+			var gameOver:GameOverModel = evt.params.getClass("GameOverModel");
+			trace("Game Results: " + gameOver);
+		}
 		
 		/**
 		 * Set up the squares and pieces
@@ -459,7 +420,7 @@ package chess
 													   piece.position.z );
 
 				// FIXME: Fire the actual move event here.
-				_eventManager.fireEvent("MOVE_PIECE", new MovePieceModel("d2", "d4") );
+				_eventManager.fireEvent("MOVE_PIECE", new MoveModel("d2", "d4") );
 				piece.position = newPosition;
 				
 				// Updtate the piece's position in the labels dictionary
