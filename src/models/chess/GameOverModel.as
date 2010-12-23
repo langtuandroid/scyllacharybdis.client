@@ -4,7 +4,7 @@ package models.chess
 	 */
 	public class GameOverModel 
 	{
-		var _winner:int;
+		private var _winner:int;
 		public function GameOverModel(winner:int = 0) 
 		{
 			_winner = winner;
