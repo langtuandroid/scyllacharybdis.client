@@ -1,12 +1,15 @@
 package chess
 {
+	import adobe.utils.CustomActions;
 	import com.smartfoxserver.v2.core.SFSEvent;
+	import com.smartfoxserver.v2.entities.data.SFSObject;
 	import core.BaseObject;
 	import core.GameObject;
 	import core.MemoryManager;
 	import core.EventManager;
 	import components.ScriptComponent;
 	import components.TransformComponent;
+	import core.NetworkObject;
 	import events.EngineEvent;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -23,6 +26,7 @@ package chess
 	import models.chess.ValidMoveModel;
 	import models.CreateRoomModel;
 	import models.RoomModel;
+	import models.SendSFSObject;
 	import org.casalib.math.geom.Point3d;
 	import chess.pieces.*;
 	import org.casalib.util.ArrayUtil;
@@ -35,6 +39,7 @@ package chess
 		 * Get the dependencies to instantiate the class
 		 */
 		private var _eventManager:EventManager;
+		private var _networkObject:NetworkObject;
 		
 		private var _squares:Dictionary = null;				// Hash map of squares with themselves as keys
 		private var _pieces:Dictionary = null;				// Hash map of pieces with themselves as keys
@@ -50,6 +55,7 @@ package chess
 		public override function awake():void
 		{
 			_eventManager = getDependency(EventManager);	
+			_networkObject = getDependency(NetworkObject);
 
 			_eventManager.registerListener("CHESS_BOARD", this, boardResults );
 			_eventManager.registerListener("CHESS_VALID_MOVES", this, validMoveResults );
@@ -57,6 +63,8 @@ package chess
 			_eventManager.registerListener("CHESS_PLAYERS", this, playersResults);
 			_eventManager.registerListener("CHESS_TURN", this, turnResults);
 			_eventManager.registerListener("CHESS_GAME_OVER", this, gameOverResults);
+			
+			sendPlayerJoined();
 		}
 		
 			
@@ -75,6 +83,12 @@ package chess
 	
 			_eventManager = null;
 		}		
+		
+		public function sendPlayerJoined():void
+		{
+			trace("***************************************");
+			_eventManager.fireEvent("SEND_OBJECT_TO_SERVER", new SendSFSObject("PLAYER_JOINED", new SFSObject, _networkObject.sfs.lastJoinedRoom ) );
+		}
 
 		/**
 		 * Recieved the board from the server handler
