@@ -96,7 +96,8 @@ package chess
 		 */
 		public function boardResults( evt:SFSEvent ):void
 		{
-			var board:BoardModel = evt.params.getClass("BoardModel");
+			var obj:SFSObject = evt.params.params as SFSObject;
+			var board:BoardModel = obj.getClass("BoardModel");
 			trace("Board Results: " + board );
 			setupBoard(board);
 		}
@@ -107,7 +108,8 @@ package chess
 		 */
 		public function validMoveResults(evt:SFSEvent):void
 		{
-			var validMoves:ValidMoveModel = evt.params.getClass("ValidMoveModel");
+			var obj:SFSObject = evt.params.params as SFSObject;
+			var validMoves:ValidMoveModel = obj.getClass("ValidMoveModel");
 			trace("Valid moves Results: " + validMoves );
 		}
 		
@@ -117,7 +119,8 @@ package chess
 		 */
 		public function moveResults( evt:SFSEvent):void
 		{
-			var movePiece:MoveModel = evt.params.getClass("MoveModel");
+			var obj:SFSObject = evt.params.params as SFSObject;
+			var movePiece:MoveModel = obj.getClass("MoveModel");
 			trace("Player Move Results: " + movePiece);
 			if ( movePiece.valid ) {
 				trace("Valid Move");
@@ -128,21 +131,24 @@ package chess
 
 		public function playersResults(evt:SFSEvent):void
 		{
-			var players:PlayersModel  = evt.params.getClass("PlayersModel");
+			var obj:SFSObject = evt.params.params as SFSObject;
+			var players:PlayersModel = obj.getClass("PlayersModel");
 			_players = players;
 			trace("Player Results: " + players);
 		}
 		
 		public function turnResults(evt:SFSEvent):void
 		{
-			var turn:TurnModel = evt.params.getClass("TurnModel");
+			var obj:SFSObject = evt.params.params as SFSObject;
+			var turn:TurnModel = obj.getClass("TurnModel");
 			_turn = turn;
 			trace("Turn Results: " + turn);
 		}
 
 		public function gameOverResults(evt:SFSEvent):void
 		{
-			var gameOver:GameOverModel = evt.params.getClass("GameOverModel");
+			var obj:SFSObject = evt.params.params as SFSObject;
+			var gameOver:GameOverModel = obj.getClass("GameOverModel");
 			trace("Game Results: " + gameOver);
 		}
 		
