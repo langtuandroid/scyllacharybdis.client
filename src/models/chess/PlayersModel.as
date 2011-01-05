@@ -1,10 +1,11 @@
 package models.chess 
 {
+	import com.smartfoxserver.v2.protocol.serialization.SerializableSFSType;
 	/**
 	 * ...
 	 * @author ...
 	 */
-	public class PlayersModel 
+	public class PlayersModel implements SerializableSFSType
 	{
 		private var _player1:int;
 		private var _player2:int;
