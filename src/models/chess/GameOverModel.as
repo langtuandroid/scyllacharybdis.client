@@ -1,8 +1,9 @@
 package models.chess 
 {
+	import com.smartfoxserver.v2.protocol.serialization.SerializableSFSType;
 	/**
 	 */
-	public class GameOverModel 
+	public class GameOverModel implements SerializableSFSType
 	{
 		private var _winner:int;
 		public function GameOverModel(winner:int = 0) 
