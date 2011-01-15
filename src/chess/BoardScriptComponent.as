@@ -152,6 +152,11 @@ package chess
 			trace("Game Results: " + gameOver);
 		}
 		
+		public function setPieceLocation( color:String, type:String, lowBits:int, highBits:int ):void
+		{
+			
+		}
+		
 		/**
 		 * Set up the squares and pieces
 		 */
@@ -164,6 +169,25 @@ package chess
 			_piecesByLabel = new Dictionary(true);
 			_labelsByPiece = new Dictionary(true);
 			_labelsBySquares = new Dictionary(true);
+			
+			// Set the actual location of each piece type
+			setPieceLocation("White", "pawn", board.lowerWhitePawns, board.higherWhitePawns);
+			setPieceLocation("White", "rook", board.lowerWhiteRooks, board.higherWhiteRooks);
+			setPieceLocation("White", "knight", board.lowerWhiteKnights, board.higherWhiteKnights);
+			setPieceLocation("White", "bishop", board.lowerWhiteBishops, board.higherWhiteBishops);
+			setPieceLocation("White", "king", board.lowerWhiteKing, board.higherWhiteKing);
+			setPieceLocation("White", "queen", board.lowerWhiteBishops, board.higherWhiteBishops);
+
+			setPieceLocation("Black", "pawn", board.lowerBlackPawns, board.higherBlackPawns);
+			setPieceLocation("Black", "rook", board.lowerBlackRooks, board.higherBlackRooks);
+			setPieceLocation("Black", "knight", board.lowerBlackKnights, board.higherBlackKnights);
+			setPieceLocation("Black", "bishop", board.lowerBlackBishops, board.higherBlackBishops);
+			setPieceLocation("Black", "king", board.lowerBlackKing, board.higherBlackKing);
+			setPieceLocation("Black", "queen", board.lowerBlackBishops, board.higherBlackBishops);
+			
+			/***********************************/
+			// The rest should be moved to the set piece location
+			/***********************************/
 			
 			// Init some variables for placement
 			var depth:int = 1;
