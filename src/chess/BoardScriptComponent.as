@@ -6,12 +6,14 @@ package chess
 	import chess.pieces.BlackPawnRenderComponent;
 	import chess.pieces.BlackQueenRenderComponent;
 	import chess.pieces.BlackRookRenderComponent;
+	import chess.pieces.PieceScriptComponent;
 	import chess.pieces.WhiteBishopRenderComponent;
 	import chess.pieces.WhiteKingRenderComponent;
 	import chess.pieces.WhiteKnightRenderComponent;
 	import chess.pieces.WhitePawnRenderComponent;
 	import chess.pieces.WhiteQueenRenderComponent;
 	import chess.pieces.WhiteRookRenderComponent;
+	import com.scyllacharybdis.components.RenderComponent;
 	import com.scyllacharybdis.components.ScriptComponent;
 	import com.scyllacharybdis.core.events.EventHandler;
 	import com.scyllacharybdis.core.events.NetworkEventHandler;
@@ -19,9 +21,14 @@ package chess
 	import com.scyllacharybdis.core.memory.MemoryManager;
 	import com.scyllacharybdis.core.objects.GameObject;
 	import com.smartfoxserver.v2.core.SFSEvent;
+	import com.smartfoxserver.v2.entities.data.ISFSObject;
 	import com.smartfoxserver.v2.entities.data.SFSObject;
+	import flash.display.MovieClip;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
+	import gui.chat.ChatBoxRenderComponent;
+	import gui.chat.ChatBoxScriptComponent;
 	import models.chess.BoardModel;
 	import models.chess.GameOverModel;
 	import models.chess.MoveModel;
@@ -337,7 +344,6 @@ package chess
 						
 						// Set its components
 						piece.addComponent(PieceScriptComponent);
-						piece.addComponent(TransformComponent);
 						piece.addComponent( renderClass );
 						
 						// Add piece as child to the board
@@ -349,13 +355,13 @@ package chess
 						_piecesByLabel[key] = piece;
 						
 						// Add event listener to handle user dragging and dropping piece to move it
-						piece.addEventListener( ChessEvent.DROP, onDrop, false, 0, true );
-						piece.addEventListener( ChessEvent.BRING_CHILD_TO_TOP, onBringChildToTop, false, 0, true );
+						//piece.addEventListener( ChessEvent.DROP, onDrop, false, 0, true );
+						//piece.addEventListener( ChessEvent.BRING_CHILD_TO_TOP, onBringChildToTop, false, 0, true );
 						
 						// Place piece ( initial sizing is handled by render component )
 						// Put it at the same position as the square
-						var squareTransform:TransformComponent = _squaresByLabel[key].getComponent( TRANSFORM_COMPONENT );
-						piece.getComponent( TRANSFORM_COMPONENT ).position = new Point3d( squareTransform.position.x, squareTransform.position.y, depth );
+						//var squareTransform:TransformComponent = _squaresByLabel[key].getComponent( TRANSFORM_COMPONENT );
+						//piece.getComponent( TRANSFORM_COMPONENT ).position = new Point3d( squareTransform.position.x, squareTransform.position.y, depth );
 						
 						// Increment depth
 						depth++;
@@ -387,7 +393,7 @@ package chess
 			
 			var chatBox:GameObject = MemoryManager.instantiate( GameObject );
 			chatBox.addComponent( ChatBoxRenderComponent );
-			chatBox.addComponent( ChatBoxScriptComponent, ChatBoxScriptComponent.dependencies );
+			chatBox.addComponent( ChatBoxScriptComponent );
 			
 			chatBox.position = new Point3d( 600, 450, depth);
 			
@@ -404,7 +410,7 @@ package chess
 			
 			for each ( var child:GameObject in owner.children )
 			{
-				renderComponents.push(child.getComponent(RENDER_COMPONENT));
+				renderComponents.push(child.getComponent(RenderComponent));
 			}
 			
 			// Sort them
@@ -457,7 +463,9 @@ package chess
 													   piece.position.z );
 
 				// FIXME: Fire the actual move event here.
-				_eventManager.fireEvent("MOVE_PIECE", new MoveModel("d2", "d4") );
+				var moveObj:ISFSObject = SFSObject.newInstance();
+				moveObj.putClass("MoveModel", new MoveModel("d2", "d4") );
+				_networkHandler.sendRoomMessage("MOVE_PIECE", moveObj );
 				piece.position = newPosition;
 				
 				// Updtate the piece's position in the labels dictionary
@@ -484,7 +492,7 @@ package chess
 			for each ( var square:GameObject in _squares ) //TODO Soon this will be a list of all available moves for the piece, not all squares
 			{
 				// Get the rectangle of the square
-				var squareClip:MovieClip = square.getComponent(RENDER_COMPONENT).baseclip;
+				var squareClip:MovieClip = square.getComponent(RenderComponent).baseclip;
 				
 				// If there is an intersection between the two pieces
 				if ( squareClip.hitTestPoint( point.x, point.y ) )

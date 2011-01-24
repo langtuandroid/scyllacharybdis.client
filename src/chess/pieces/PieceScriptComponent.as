@@ -1,7 +1,8 @@
 package chess.pieces   
 {
-	import components.RenderComponent;
-	import components.ScriptComponent;
+	import com.scyllacharybdis.components.MovieClipComponent;
+	import com.scyllacharybdis.components.RenderComponent;
+	import com.scyllacharybdis.components.ScriptComponent;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import chess.ChessEvent;
@@ -23,7 +24,7 @@ package chess.pieces
 		public override function onMouseDown( e:MouseEvent ):void
 		{
 			
-			var renderComponent:RenderComponent = owner.getComponent( RENDER_COMPONENT );
+			var renderComponent:MovieClipComponent = owner.getComponent( RenderComponent );
 			
 			if ( renderComponent != null )
 			{
@@ -36,7 +37,7 @@ package chess.pieces
 		
 		public override function onMouseUp( e:MouseEvent ):void
 		{
-			var renderComponent:RenderComponent = owner.getComponent( RENDER_COMPONENT );
+			var renderComponent:MovieClipComponent = owner.getComponent( RenderComponent );
 			
 			if ( renderComponent != null )
 			{	

@@ -1,8 +1,13 @@
 package gui.chat 
 {
-	import components.ScriptComponent;
+	import com.scyllacharybdis.components.RenderComponent;
+	import com.scyllacharybdis.components.ScriptComponent;
+	import com.scyllacharybdis.core.events.EventHandler;
+	import com.scyllacharybdis.core.events.NetworkEventHandler;
+	import com.scyllacharybdis.core.events.NetworkEvents;
+	import com.smartfoxserver.v2.entities.data.ISFSObject;
+	import com.smartfoxserver.v2.entities.data.SFSObject;
 	import fl.events.ComponentEvent;
-	import core.EventManager;
 	
 	/**
 	 * ...
@@ -10,9 +15,8 @@ package gui.chat
 	 */
 	public class ChatBoxScriptComponent extends ScriptComponent
 	{
-		public static function get dependencies():Array { return [EventManager]; }
-		
-		private var _eventManager:EventManager = null;
+
+		private var _networkHandler:NetworkEventHandler = null;
 		
 		public function ChatBoxScriptComponent() 
 		{
@@ -21,34 +25,36 @@ package gui.chat
 		
 		public override function awake():void
 		{
-			_eventManager = getDependency(EventManager);
+			_networkHandler = getDependency(NetworkEventHandler);
 		}
 		
 		public override function destroy():void
 		{
-			_eventManager = null;
+			_networkHandler = null;
 		}
 		
 		public override function start():void
 		{
-			_eventManager.registerListener("RECEIVED_CHATMESSAGE", this, displayMessage );
+			_networkHandler.addEventListener(NetworkEvents.RECEIVED_CHAT_MESSAGE, this, displayMessage );
 		}
 		
 		public override function stop():void
 		{
-			_eventManager.unregisterListener("RECEIVED_CHATMESSAGE", this, displayMessage);
+			_networkHandler.removeEventListener(NetworkEvents.RECEIVED_CHAT_MESSAGE, this, displayMessage);
 		}
 		
 		public function onInputTextEnter( e:ComponentEvent ):void
 		{
-			var renderable:ChatBoxRenderComponent = owner.getComponent( RENDER_COMPONENT );
+			var renderable:ChatBoxRenderComponent = owner.getComponent( RenderComponent );
 			
 			var msg:String = renderable.inputText.text;
 			
 			if ( msg != "" )
 			{
 				// Send the message to the other player
-				_eventManager.fireEvent("SEND_CHATMESSAGE", msg);
+				var messageObj:ISFSObject = SFSObject.newInstance();
+				messageObj.putUtfString("Message", msg );
+				_networkHandler.sendRoomMessage(NetworkEvents.SEND_CHAT_MESSAGE, messageObj);
 				
 				// Append the message to the text area
 				displayMessage( msg );
@@ -60,7 +66,7 @@ package gui.chat
 		
 		private function displayMessage( data:* ):void
 		{
-			var renderable:ChatBoxRenderComponent = owner.getComponent( RENDER_COMPONENT );
+			var renderable:ChatBoxRenderComponent = owner.getComponent( RenderComponent );
 			
 			var msg:String = data as String;
 			
