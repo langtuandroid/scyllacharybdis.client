@@ -1,36 +1,34 @@
 package chess
 {
-	import adobe.utils.CustomActions;
+	import chess.pieces.BlackBishopRenderComponent;
+	import chess.pieces.BlackKingRenderComponent;
+	import chess.pieces.BlackKnightRenderComponent;
+	import chess.pieces.BlackPawnRenderComponent;
+	import chess.pieces.BlackQueenRenderComponent;
+	import chess.pieces.BlackRookRenderComponent;
+	import chess.pieces.WhiteBishopRenderComponent;
+	import chess.pieces.WhiteKingRenderComponent;
+	import chess.pieces.WhiteKnightRenderComponent;
+	import chess.pieces.WhitePawnRenderComponent;
+	import chess.pieces.WhiteQueenRenderComponent;
+	import chess.pieces.WhiteRookRenderComponent;
+	import com.scyllacharybdis.components.ScriptComponent;
+	import com.scyllacharybdis.core.events.EventHandler;
+	import com.scyllacharybdis.core.events.NetworkEventHandler;
+	import com.scyllacharybdis.core.events.NetworkEvents;
+	import com.scyllacharybdis.core.memory.MemoryManager;
+	import com.scyllacharybdis.core.objects.GameObject;
 	import com.smartfoxserver.v2.core.SFSEvent;
 	import com.smartfoxserver.v2.entities.data.SFSObject;
-	import core.BaseObject;
-	import core.GameObject;
-	import core.MemoryManager;
-	import core.EventManager;
-	import components.ScriptComponent;
-	import components.TransformComponent;
-	import core.NetworkObject;
-	import events.EngineEvent;
-	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	import gui.chat.ChatBoxRenderComponent;
-	import gui.chat.ChatBoxScriptComponent;
 	import models.chess.BoardModel;
 	import models.chess.GameOverModel;
 	import models.chess.MoveModel;
 	import models.chess.PlayersModel;
 	import models.chess.TurnModel;
 	import models.chess.ValidMoveModel;
-	import models.CreateRoomModel;
-	import models.RoomModel;
-	import models.SendSFSObject;
 	import org.casalib.math.geom.Point3d;
-	import chess.pieces.*;
-	import org.casalib.util.ArrayUtil;
-
 	/**
 	 */
 	public class BoardScriptComponent extends ScriptComponent
@@ -38,8 +36,7 @@ package chess
 		/**
 		 * Get the dependencies to instantiate the class
 		 */
-		private var _eventManager:EventManager;
-		private var _networkObject:NetworkObject;
+		private var _networkHandler:NetworkEventHandler;
 		
 		private var _squares:Dictionary = null;				// Hash map of squares with themselves as keys
 		private var _pieces:Dictionary = null;				// Hash map of pieces with themselves as keys
@@ -54,15 +51,14 @@ package chess
 		
 		public override function awake():void
 		{
-			_eventManager = getDependency(EventManager);	
-			_networkObject = getDependency(NetworkObject);
+			_networkHandler = getDependency(NetworkEventHandler);	
 
-			_eventManager.registerListener("CHESS_BOARD", this, boardResults );
-			_eventManager.registerListener("CHESS_VALID_MOVES", this, validMoveResults );
-			_eventManager.registerListener("CHESS_MOVE_RESULTS", this, moveResults );
-			_eventManager.registerListener("CHESS_PLAYERS", this, playersResults);
-			_eventManager.registerListener("CHESS_TURN", this, turnResults);
-			_eventManager.registerListener("CHESS_GAME_OVER", this, gameOverResults);
+			_networkHandler.addEventListener("CHESS_BOARD", this, boardResults );
+			_networkHandler.addEventListener("CHESS_VALID_MOVES", this, validMoveResults );
+			_networkHandler.addEventListener("CHESS_MOVE_RESULTS", this, moveResults );
+			_networkHandler.addEventListener("CHESS_PLAYERS", this, playersResults);
+			_networkHandler.addEventListener("CHESS_TURN", this, turnResults);
+			_networkHandler.addEventListener("CHESS_GAME_OVER", this, gameOverResults);
 			
 			sendPlayerJoined();
 		}
@@ -74,20 +70,20 @@ package chess
 		public override function destroy():void
 		{
 			clearBoard();
-			_eventManager.unregisterListener("CHESS_BOARD", this, boardResults );
-			_eventManager.unregisterListener("CHESS_VALID_MOVES", this, validMoveResults );
-			_eventManager.unregisterListener("CHESS_MOVE_RESULTS", this, moveResults );
-			_eventManager.unregisterListener("CHESS_PLAYERS", this, playersResults);
-			_eventManager.unregisterListener("CHESS_TURN", this, turnResults);
-			_eventManager.unregisterListener("CHESS_GAME_OVER", this, gameOverResults);
+			
+			_networkHandler.removeEventListener("CHESS_BOARD", this, boardResults );
+			_networkHandler.removeEventListener("CHESS_VALID_MOVES", this, validMoveResults );
+			_networkHandler.removeEventListener("CHESS_MOVE_RESULTS", this, moveResults );
+			_networkHandler.removeEventListener("CHESS_PLAYERS", this, playersResults);
+			_networkHandler.removeEventListener("CHESS_TURN", this, turnResults);
+			_networkHandler.removeEventListener("CHESS_GAME_OVER", this, gameOverResults);
 	
-			_eventManager = null;
+			_networkHandler = null;
 		}		
 		
 		public function sendPlayerJoined():void
 		{
-			trace("***************************************");
-			_eventManager.fireEvent("SEND_OBJECT_TO_SERVER", new SendSFSObject("PLAYER_JOINED", new SFSObject, _networkObject.sfs.lastJoinedRoom ) );
+			_networkHandler.sendRoomMessage("PLAYER_JOINED");
 		}
 
 		/**
@@ -211,18 +207,15 @@ package chess
 					var square:GameObject = MemoryManager.instantiate( GameObject );
 					
 					// Set its components
-					square.addComponent(TransformComponent);
 					square.addComponent( ( i % 2 == j % 2 ) ? WhiteSquareRenderComponent : BlackSquareRenderComponent );
 					
 					// Add the square as a child to the board
 					owner.addChild( square );
 					
 					// Size and place square
-					square.getComponent( BaseObject.TRANSFORM_COMPONENT ).dimensions = new Point( size, size );
-					square.getComponent( BaseObject.TRANSFORM_COMPONENT ).position = new Point3d( startingX + i * size, 
-																								 startingY + j * size, 
-																								 depth );
-																								 
+					//square.getComponent( BaseObject.TRANSFORM_COMPONENT ).dimensions = new Point( size, size );
+					square.position = new Point3d( startingX + i * size, startingY + j * size, depth );
+
 					// Increment relative depth of each piece
 					depth++;
 					

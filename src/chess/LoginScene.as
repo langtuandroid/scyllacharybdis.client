@@ -1,9 +1,8 @@
 package chess 
 {
-	import core.GameObject;
-	import core.SceneObject;
-	import core.MemoryManager;
-	import core.EventManager;
+	import com.scyllacharybdis.core.memory.MemoryManager;
+	import com.scyllacharybdis.core.objects.GameObject;
+	import com.scyllacharybdis.core.objects.SceneObject;
 	import gui.login.*;
 	
 	/**
@@ -15,7 +14,7 @@ package chess
 		public override function awake():void
 		{
 			_loginBox = MemoryManager.instantiate( GameObject );
-			_loginBox.addComponent(LoginBoxScriptComponent, LoginBoxScriptComponent.dependencies);
+			_loginBox.addComponent(LoginBoxScriptComponent);
 			_loginBox.addComponent(LoginBoxRenderComponent);
 		}
 		

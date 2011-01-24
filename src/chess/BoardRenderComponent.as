@@ -1,14 +1,14 @@
 package chess
 {
-	import components.RenderComponent;
+	import com.scyllacharybdis.components.MovieClipComponent;
 
-	public class BoardRenderComponent extends RenderComponent
+	public class BoardRenderComponent extends MovieClipComponent
 	{
 		public override function start():void
 		{
-			_baseclip.graphics.beginFill( 0x4499FF );
-			_baseclip.graphics.drawRect( 0, 0, 800, 600 );
-			_baseclip.graphics.endFill();
+			baseclip.graphics.beginFill( 0x4499FF );
+			baseclip.graphics.drawRect( 0, 0, 800, 600 );
+			baseclip.graphics.endFill();
 		}
 	}
 }

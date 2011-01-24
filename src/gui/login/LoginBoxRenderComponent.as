@@ -1,6 +1,8 @@
 package gui.login 
 {
-	import components.RenderComponent;
+	import com.scyllacharybdis.components.MovieClipComponent;
+	import com.scyllacharybdis.components.RenderComponent;
+	import com.scyllacharybdis.components.ScriptComponent;
 	import flash.display.MovieClip;
 	
 	import fl.controls.TextInput;
@@ -14,7 +16,7 @@ package gui.login
 	 * ...
 	 * @author 
 	 */
-	public class LoginBoxRenderComponent extends RenderComponent 
+	public class LoginBoxRenderComponent extends MovieClipComponent 
 	{
 		private var _userInput:TextInput;
         private var _passInput:TextInput;
@@ -52,9 +54,9 @@ package gui.login
 		
 		public override function stop():void 
 		{
-			_userInput.removeEventListener(Event.CHANGE, owner.getComponent( SCRIPT_COMPONENT ).textEntered);
-            _passInput.removeEventListener(Event.CHANGE, owner.getComponent( SCRIPT_COMPONENT ).textEntered);
-			_loginButton.removeEventListener(MouseEvent.CLICK, owner.getComponent( SCRIPT_COMPONENT ).submitLogin);
+			_userInput.removeEventListener(Event.CHANGE, owner.getComponent( ScriptComponent ).textEntered);
+            _passInput.removeEventListener(Event.CHANGE, owner.getComponent( ScriptComponent ).textEntered);
+			_loginButton.removeEventListener(MouseEvent.CLICK, owner.getComponent( ScriptComponent ).submitLogin);
 			
 			baseclip.removeChild(_userInput);
 			baseclip.removeChild(_passInput);
@@ -88,8 +90,8 @@ package gui.login
             
 			_passInput.displayAsPassword = true;
             
-			_userInput.addEventListener(Event.CHANGE, owner.getComponent( SCRIPT_COMPONENT ).textEntered, false, 0, true );
-            _passInput.addEventListener(Event.CHANGE, owner.getComponent( SCRIPT_COMPONENT ).textEntered, false, 0, true );
+			_userInput.addEventListener(Event.CHANGE, owner.getComponent( ScriptComponent ).textEntered, false, 0, true );
+            _passInput.addEventListener(Event.CHANGE, owner.getComponent( ScriptComponent ).textEntered, false, 0, true );
             
 			baseclip.addChild(_userInput);
             baseclip.addChild(_passInput);
@@ -116,7 +118,7 @@ package gui.login
             
 			_loginButton.enabled = false;
             
-            _loginButton.addEventListener(MouseEvent.CLICK, owner.getComponent( SCRIPT_COMPONENT ).submitLogin);
+            _loginButton.addEventListener(MouseEvent.CLICK, owner.getComponent( ScriptComponent ).submitLogin);
             
 			baseclip.addChild(_loginButton);
         }

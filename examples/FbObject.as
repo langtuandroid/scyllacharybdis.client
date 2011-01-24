@@ -1,7 +1,7 @@
 package  
 {
 	import com.facebook.graph.Facebook;
-	import core.BaseObject;
+	import com.scyllacharybdis.core.objects.BaseObject;
 	import flash.events.MouseEvent;
 	
 	/**

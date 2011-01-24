@@ -1,10 +1,11 @@
 package gui.login 
 {
-	import components.ScriptComponent;
-	import core.EventManager;
+	import com.scyllacharybdis.components.RenderComponent;
+	import com.scyllacharybdis.components.ScriptComponent;
+	import com.scyllacharybdis.core.events.EventHandler;
+	import com.scyllacharybdis.models.LoginModel;
 	import flash.events.Event;
     import flash.events.MouseEvent;
-	import models.LoginModel;
 	
 	/**
 	 * ...
@@ -12,9 +13,7 @@ package gui.login
 	 */
 	public class LoginBoxScriptComponent extends ScriptComponent 
 	{
-		private var _eventManager:EventManager = null;
-		
-		public static function get dependencies():Array { return [EventManager]; }
+		private var _eventManager:EventHandler = null;
 		
 		public function LoginBoxScriptComponent() 
 		{
@@ -23,12 +22,12 @@ package gui.login
 		
 		public override function awake():void
 		{
-			_eventManager = getDependency(EventManager);
+			_eventManager = getDependency(EventHandler);
 		}
 		
 		public function textEntered(e:Event):void 
 		{
-			var renderable:LoginBoxRenderComponent = owner.getComponent( RENDER_COMPONENT );
+			var renderable:LoginBoxRenderComponent = owner.getComponent( RenderComponent );
 			
             if ( renderable.username != "" && renderable.password != "") 
 			{
@@ -42,7 +41,7 @@ package gui.login
 		
         public function submitLogin(e:MouseEvent):void 
 		{
-            var renderable:LoginBoxRenderComponent = owner.getComponent( RENDER_COMPONENT );
+            var renderable:LoginBoxRenderComponent = owner.getComponent( RenderComponent );
 			
 			var user:String = renderable.username;
 			var pass:String = renderable.password;
