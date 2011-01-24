@@ -1,10 +1,9 @@
 package chess 
 {
-	import core.EventManager;
-	import core.GameObject;
-	import core.MemoryManager;
-	import core.SceneManager;
-	import core.SceneObject;
+	import com.scyllacharybdis.core.memory.MemoryManager;
+	import com.scyllacharybdis.core.objects.GameObject;
+	import com.scyllacharybdis.core.objects.SceneObject;
+	import com.scyllacharybdis.core.scenes.SceneManager;
 	import gui.difficulty.DifficultyMenuRenderComponent;
 	import gui.difficulty.DifficultyMenuScriptComponent;
 	
@@ -19,7 +18,7 @@ package chess
 		public override function awake():void
 		{
 			_difficultyMenu = MemoryManager.instantiate( GameObject );
-			_difficultyMenu.addComponent(DifficultyMenuScriptComponent, [EventManager, SceneManager]);
+			_difficultyMenu.addComponent(DifficultyMenuScriptComponent);
 			_difficultyMenu.addComponent(DifficultyMenuRenderComponent);
 		}
 		

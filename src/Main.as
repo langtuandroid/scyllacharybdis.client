@@ -1,47 +1,29 @@
 ﻿package 
 {
-	
 	import chess.DifficultyScene;
 	import chess.LoginScene;
-	import chess.GameScene;
-	import flash.display.MovieClip;
+	import com.scyllacharybdis.core.events.NetworkEventHandler;
+	import com.scyllacharybdis.core.events.NetworkEvents;
+	import com.scyllacharybdis.core.memory.MemoryManager;
+	import com.scyllacharybdis.core.rendering.Renderer;
+	import com.scyllacharybdis.core.rendering.Window;
+	import com.scyllacharybdis.core.scenes.SceneManager;
+	import com.scyllacharybdis.handlers.ChatMessageHandler;
+	import com.scyllacharybdis.handlers.ConnectionHandler;
+	import com.scyllacharybdis.handlers.LoginHandler;
+	import com.scyllacharybdis.handlers.RoomHandler;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.utils.getQualifiedSuperclassName;
-	import models.CreateRoomModel;
-	import org.casalib.math.geom.Point3d;
-	import core.BaseObject;
-	import core.GameObject;
-	import core.Renderer;
-	import core.MemoryManager;
-	import core.EventManager;
-	import core.NetworkObject;
-	import core.SceneManager;
-	
-	import chess.BoardRenderComponent;
-	import chess.BoardScriptComponent;
-	
-	import gui.login.LoginBoxRenderComponent;
-	import gui.login.LoginBoxScriptComponent;
-	
-	import handlers.ConnectionHandler;
-	import handlers.LoginHandler;
-	import handlers.RoomHandler;
-	import handlers.MessageHandler;
-	import FbObject;
-	
 	/**
 	 */
 	public class Main extends Sprite 
 	{
+		private var _window:Window;
 		private var _renderer:Renderer;
-		private var _loginBox:GameObject;
-		private var _board:GameObject;
-		private var _eventManager:EventManager;
-		private var _listerner:EventListener;
-		private var _networkObject:NetworkObject;
 		private var _sceneManager:SceneManager;
+		private var _listerner:EventListener;
 		private var _facebook:FbObject;
+		private var _networkHandler:NetworkEventHandler;
 		
 		
 		public function Main():void 
@@ -60,40 +42,43 @@
 		
 		private function setup():void
 		{
-			// Create the renderer
-			_renderer = MemoryManager.instantiate(Renderer, Renderer.dependencies);
+			// Create a window
+			_window = MemoryManager.instantiate(Window);
+			_window.displayContext = this;
 			
-			// Start the renderer
-			addEventListener( Event.ENTER_FRAME, onEnterFrame );
+			// Create a rendering system
+			_renderer = MemoryManager.instantiate(Renderer);
 			
-			// Create the event manager
-			_eventManager = MemoryManager.instantiate(EventManager);
-			
-			_listerner = MemoryManager.instantiate( EventListener, [EventManager] );			
-
 			// Create a network layer
-			_networkObject = MemoryManager.instantiate(NetworkObject);
+			var _networkHandler:NetworkEventHandler = MemoryManager.instantiate(NetworkEventHandler);	
 			
-			// Base Handlers
-			_networkObject.addComponent(ConnectionHandler, [EventManager]);
-			_networkObject.addComponent(LoginHandler, [EventManager]);
-			_networkObject.addComponent(RoomHandler, [EventManager]);
-			_networkObject.addComponent(MessageHandler, [EventManager]);
+			var _connectionHandler:ConnectionHandler = MemoryManager.instantiate(ConnectionHandler);
+			var _loginHandler:LoginHandler = MemoryManager.instantiate(LoginHandler);
+			var _roomHandler:RoomHandler = MemoryManager.instantiate(RoomHandler);
+			var _chatMessageHandler:ChatMessageHandler = MemoryManager.instantiate(ChatMessageHandler);
 			
-			// Create a scene manager
-			_sceneManager = MemoryManager.instantiate( SceneManager );
+			// Create the scene manager
+			_sceneManager = MemoryManager.instantiate(SceneManager);
 		}
 		
 		private function start():void
 		{
-			_eventManager.registerListener("CONNECTION_SUCCESS", this, onConnectionSuccess );
-			_eventManager.registerListener("CONNECTION_FAILED", this, onConnectionFail );
-			_eventManager.fireEvent("NETWORK_CONNECT");
+			// Add the event listeners
+			_networkHandler.addEventListener(NetworkEvents.CONNECTION_SUCCESS, this, onConnectionSuccess );
+			_networkHandler.addEventListener(NetworkEvents.CONNECTION_FAILED, this, onConnectionFail );
+			
+			// Fire the connection event
+			_networkHandler.fireEvent(NetworkEvents.CONNECT);
 		}
 		
 		private function onConnectionSuccess( data:* ):void
 		{
-			_eventManager.registerListener("LOGIN_SUCCESS", this, onLoginSuccess);
+			// Remove the listeners
+			_networkHandler.removeEventListener(NetworkEvents.CONNECTION_SUCCESS, this, onConnectionSuccess );
+			_networkHandler.removeEventListener(NetworkEvents.CONNECTION_FAILED, this, onConnectionFail );
+			
+			// Add the event listeners
+			_networkHandler.addEventListener(NetworkEvents.LOGIN_SUCCESS, this, onLoginSuccess);
 			
 			// Push a game scene with a login scene on top 
 			_sceneManager.PushScene( LoginScene );
@@ -101,24 +86,31 @@
 		
 		private function onConnectionFail( data:* ):void
 		{
+			// Remove the listeners
+			_networkHandler.removeEventListener(NetworkEvents.CONNECTION_SUCCESS, this, onConnectionSuccess );
+			_networkHandler.removeEventListener(NetworkEvents.CONNECTION_FAILED, this, onConnectionFail );
+
+			// Print the error
 			var msg:String = data as String;
-			
 			trace("CONNECTION FAILED: " + msg);
 		}
 		
 		private function onLoginSuccess( data:* ):void
 		{
+			// Remove the listeners
+			_networkHandler.removeEventListener(NetworkEvents.LOGIN_SUCCESS, this, onLoginSuccess);
+			
+			// Jump to the difficult scene
 			_sceneManager.PushScene( DifficultyScene );
 		}
 		
 		private function onLoginFail( data:* ):void
 		{
-			trace("YOU SUCK, LOGIN FAILED");
 		}
 		
 		private function onEnterFrame( e:Event ):void
 		{
-			_renderer.render(this);
+			_renderer.render();
 		}
 	}
 }

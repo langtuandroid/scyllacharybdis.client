@@ -1,6 +1,6 @@
 package chess.pieces 
 {
-	import components.RenderComponent;
+	import com.scyllacharybdis.components.MovieClipComponent;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.net.URLRequest;
@@ -9,7 +9,7 @@ package chess.pieces
 	 * ...
 	 * @author 
 	 */
-	public class BlackKnightRenderComponent extends RenderComponent 
+	public class BlackKnightRenderComponent extends MovieClipComponent 
 	{
 		
 		public function BlackKnightRenderComponent() 
@@ -27,11 +27,12 @@ package chess.pieces
 		
 		private function onInit( e:Event ):void
 		{
-			removeEventListener( Event.COMPLETE, onInit );
+			_loader.contentLoaderInfo.removeEventListener( Event.COMPLETE, onInit );
 			
 			_loader.width = 50;
 			_loader.height = 50;
-			_baseclip.addChild(_loader);
+			
+			baseclip.addChild(_loader);
 		}
 		
 	}

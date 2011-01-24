@@ -1,6 +1,8 @@
 package gui.difficulty 
 {
-	import components.RenderComponent;
+	import com.scyllacharybdis.components.MovieClipComponent;
+	import com.scyllacharybdis.components.RenderComponent;
+	import com.scyllacharybdis.components.ScriptComponent;
 	import fl.controls.Button;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
@@ -9,7 +11,7 @@ package gui.difficulty
 	 * ...
 	 * @author 
 	 */
-	public class DifficultyMenuRenderComponent extends RenderComponent 
+	public class DifficultyMenuRenderComponent extends MovieClipComponent 
 	{
 		private var _buttons:Dictionary = null;
 		
@@ -55,7 +57,7 @@ package gui.difficulty
 			{
 				baseclip.addChild( _buttons[key] );
 			    _buttons[key].label = key;
-				_buttons[key].addEventListener( MouseEvent.CLICK, owner.getComponent(SCRIPT_COMPONENT).listeners[key], false, 0, true );
+				_buttons[key].addEventListener( MouseEvent.CLICK, owner.getComponent(ScriptComponent).listeners[key], false, 0, true );
 			}
 		}
 		
@@ -64,7 +66,7 @@ package gui.difficulty
 			for ( var key:String in _buttons )
 			{
 				baseclip.removeChild( _buttons[key] );
-				_buttons[key].removeEventListener( MouseEvent.CLICK, owner.getComponent(SCRIPT_COMPONENT).listeners[key] );
+				_buttons[key].removeEventListener( MouseEvent.CLICK, owner.getComponent(ScriptComponent).listeners[key] );
 			}
 		}
 	}

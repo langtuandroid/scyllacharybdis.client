@@ -1,23 +1,24 @@
 package  
 {
-	import core.BaseObject;
-	import core.EventManager
+	import com.scyllacharybdis.core.events.EventHandler;
+	import com.scyllacharybdis.core.objects.BaseObject;
+
 	/**
 	 */
 	public class EventListener extends BaseObject
 	{
-		private var _eventHandler:EventManager;
+		private var _eventHandler:EventHandler;
 		
 		public override function awake():void
 		{
-			_eventHandler = getDependency(EventManager);
+			_eventHandler = getDependency(EventHandler);
 			
 			if ( _eventHandler == null ) {
 				trace("Event Handler is null");
 				return;
 			}
 			trace("RegisterListener");
-			_eventHandler.registerListener("myevent", this, myEventHandler);			
+			_eventHandler.addEventListener("myevent", this, myEventHandler);			
 		}
 		
 		public override function destroy():void
@@ -27,7 +28,7 @@ package
 				return;
 			}
 			trace("UnregisterListener");
-			_eventHandler.unregisterListener("myevent", this, myEventHandler);
+			_eventHandler.removeEventListener("myevent", this, myEventHandler);
 		}
 
 		public function myEventHandler(theData:*):void

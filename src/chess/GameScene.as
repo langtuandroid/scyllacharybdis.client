@@ -1,10 +1,8 @@
 package chess 
 {
-	import core.GameObject;
-	import core.NetworkObject;
-	import core.SceneObject;
-	import core.EventManager;
-	import core.MemoryManager;
+	import com.scyllacharybdis.core.memory.MemoryManager;
+	import com.scyllacharybdis.core.objects.GameObject;
+	import com.scyllacharybdis.core.objects.SceneObject;
 	
 	/**
 	 * ...
@@ -17,7 +15,7 @@ package chess
 		public override function awake():void
 		{
 			_board = MemoryManager.instantiate( GameObject );
-			_board.addComponent( BoardScriptComponent, [EventManager, NetworkObject]);
+			_board.addComponent( BoardScriptComponent );
 			_board.addComponent( BoardRenderComponent );
 			
 		}

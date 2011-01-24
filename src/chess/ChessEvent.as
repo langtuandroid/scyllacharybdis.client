@@ -1,6 +1,6 @@
 package chess 
 {
-	import events.EngineEvent;
+	import com.scyllacharybdis.events.EngineEvent;
 	
 	/**
 	 * ...

@@ -1,19 +1,19 @@
 package chess
 {
-	import components.RenderComponent;
+	import com.scyllacharybdis.components.MovieClipComponent;
 
-	public class WhiteSquareRenderComponent  extends RenderComponent
+	public class WhiteSquareRenderComponent  extends MovieClipComponent
 	{
 		public override function awake():void
 		{
-			_baseclip.graphics.beginFill( 0xDDDDDD );
-			_baseclip.graphics.drawRect( 0, 0, 50, 50 );
-			_baseclip.graphics.endFill();
+			baseclip.graphics.beginFill( 0xDDDDDD );
+			baseclip.graphics.drawRect( 0, 0, 50, 50 );
+			baseclip.graphics.endFill();
 		}
 		
 		public override function destroy():void 
 		{
-			_baseclip.graphics.clear();
+			baseclip.graphics.clear();
 		}
 	}
 }
