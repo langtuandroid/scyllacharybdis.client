@@ -1,16 +1,17 @@
 package gui.chat 
 {
-	import components.RenderComponent;
+	import com.scyllacharybdis.components.MovieClipComponent;
+	import com.scyllacharybdis.components.ScriptComponent;
+	import com.scyllacharybdis.core.memory.MemoryManager;
 	import fl.controls.TextArea;
 	import fl.controls.TextInput;
-	import core.MemoryManager;
 	import fl.events.ComponentEvent;
 	
 	/**
 	 * ...
 	 * @author The Engine Team
 	 */
-	public class ChatBoxRenderComponent extends RenderComponent
+	public class ChatBoxRenderComponent extends MovieClipComponent
 	{
 		private var _messageText:TextArea = null;
 		private var _inputText:TextInput = null;
@@ -53,7 +54,7 @@ package gui.chat
 			baseclip.addChild( _messageText );
 			baseclip.addChild( _inputText );
 			
-			_inputText.addEventListener( ComponentEvent.ENTER, owner.getComponent( SCRIPT_COMPONENT ).onInputTextEnter, false, 0, true );
+			_inputText.addEventListener( ComponentEvent.ENTER, owner.getComponent( ScriptComponent ).onInputTextEnter, false, 0, true );
 		}
 		
 		public override function stop():void
@@ -62,7 +63,7 @@ package gui.chat
 			baseclip.removeChild( _inputText );
 			baseclip.graphics.clear();
 			
-			_inputText.removeEventListener( ComponentEvent.ENTER, owner.getComponent( SCRIPT_COMPONENT ).onInputTextEnter );
+			_inputText.removeEventListener( ComponentEvent.ENTER, owner.getComponent( ScriptComponent ).onInputTextEnter );
 		}
 		
 	}
